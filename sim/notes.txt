@@ -1,0 +1,1 @@
+g++ digit_dodo_sim.cpp -o sim -lsfml-graphics -lsfml-window -lsfml-system -I ../include
