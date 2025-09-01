@@ -1,10 +1,11 @@
 #include "digit_dodo_defines.h"
+#include "digit_dodo_sim.h"
 
 #include <SFML/Graphics.hpp>
 
 void drawDigit(sf::RenderWindow& window, int digit, sf::Vector2f position, float size, bool showDot);
-void drawNumber(sf::RenderWindow& window, const std::string& number, sf::Vector2f startPos, float size);
-
+void drawNumberString(sf::RenderWindow& window, const std::string& number, sf::Vector2f startPos, float size);
+void drawNumberInt(sf::RenderWindow& window, const int& number, sf::Vector2f startPos, float size);
 
 
 int main() {
@@ -20,7 +21,7 @@ int main() {
         }
 
         window.clear();
-        drawNumber(window, number, {50, 50}, 60);
+        drawNumberString(window, number, {50, 50}, 60);
         window.display();
     }
 
@@ -69,20 +70,20 @@ void drawDigit(sf::RenderWindow& window, int digit, sf::Vector2f position, float
     window.draw(dot);
 }
 
-void drawNumber(sf::RenderWindow& window, const std::string& number, sf::Vector2f startPos, float size)
+void drawNumberString(sf::RenderWindow& window, const std::string& number, sf::Vector2f startPos, float size)
 {
     float spacing = size + size / 4;
 
-    unsigned char pos = 0;
+    unsigned char num_count = 0;
 
-    for (size_t i = 0; i < number.size(); ++i) {
+    for (size_t i = 0; num_count < NUM_DIGITS; ++i) {
         char ch = number[i];
-        bool showDot = (i + 1 < number.size() && number[i + 1] == '.');
+        bool showDot = (i < (NUM_DIGITS) && number[i + 1] == '.');
 
         if (isdigit(ch)) {
             int digit = ch - '0';
-            drawDigit(window, digit, {startPos.x + pos * spacing, startPos.y}, size, showDot);
-            pos += 1;
+            drawDigit(window, digit, {startPos.x + num_count * spacing, startPos.y}, size, showDot);
+            num_count += 1;
         }
     }
 }
