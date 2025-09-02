@@ -1,33 +1,123 @@
-#include "digit_dodo_defines.h"
-#include "digit_dodo_sim.h"
+#include "digit_dodo_defines.hpp"
+#include "digit_dodo_sim.hpp"
 
-#include <SFML/Graphics.hpp>
+#include <cassert>
+#include <unistd.h>
 
 void drawDigit(sf::RenderWindow& window, int digit, sf::Vector2f position, float size, bool showDot);
 void drawNumberString(sf::RenderWindow& window, const std::string& number, sf::Vector2f startPos, float size);
 void drawNumberInt(sf::RenderWindow& window, const int& number, sf::Vector2f startPos, float size);
 
+SimI7SegmentPlatformImp::SimI7SegmentPlatformImp(): m_window(sf::VideoMode(800, 800), "DigitDodo 7-Segment")
+{
+    // Hardcoded for now; could be loaded from file
+    m_displayCount = 4;
+    std::vector<HardwareGroup> hwSpec;
 
-int main() {
-    sf::RenderWindow window(sf::VideoMode(800, 300), "DigitDodo 7-Segment");
+    std::vector<SegmentDisplayType> group1_seg_types;
+    std::string group1_name = "volt";
+    group1_seg_types.push_back(SegmentDisplayType::SEG_7);
+    group1_seg_types.push_back(SegmentDisplayType::SEG_7);
+    group1_seg_types.push_back(SegmentDisplayType::SEG_7);
+    group1_seg_types.push_back(SegmentDisplayType::SEG_7);
+    hwSpec.emplace_back(group1_name, group1_seg_types);
 
-    std::string number = "43.123"; // You can change this dynamically
+    std::vector<SegmentDisplayType> group2_seg_types;
+    std::string group2_name = "curr";
+    group2_seg_types.push_back(SegmentDisplayType::SEG_7);
+    group2_seg_types.push_back(SegmentDisplayType::SEG_7);
+    group2_seg_types.push_back(SegmentDisplayType::SEG_7);
+    group2_seg_types.push_back(SegmentDisplayType::SEG_7);
+    hwSpec.emplace_back(group2_name, group2_seg_types);
 
-    while (window.isOpen()) {
+    m_groups = hwSpec;
+
+}
+
+int SimI7SegmentPlatformImp::getDisplayCount() const
+{
+    return m_displayCount;
+}
+
+std::vector<HardwareGroup> SimI7SegmentPlatformImp::getGroups() const
+{
+    return m_groups;
+}
+
+sf::RenderWindow& SimI7SegmentPlatformImp::getWindow()
+{
+    return m_window;
+}
+
+void SimI7SegmentPlatformImp::updateRawBuffer(const std::string& t_group_name, const std::string& buffer)
+{
+    if (t_group_name == "volt")
+    {
+        drawNumberString(m_window, buffer, {50, 50}, 60);
+    }
+    else if (t_group_name == "curr")
+    {
+        drawNumberString(m_window, buffer, {50, 250}, 60);
+    }
+}
+
+SimI7SegmentPlatformImp::~SimI7SegmentPlatformImp()
+{
+
+}
+
+int main()
+{
+    int i = 0;
+
+    std::vector<std::string> volt;
+
+    volt.push_back("10.01");
+    volt.push_back("11.11");
+    volt.push_back("12.21");
+    volt.push_back("20.31");
+    volt.push_back("204.1");
+
+    std::vector<std::string> curr;
+    
+    curr.push_back("01.22");
+    curr.push_back("11.22");
+    curr.push_back("21.32");
+    curr.push_back("01.42");
+    curr.push_back("11.42");
+
+    SimI7SegmentPlatformImp* sim = new SimI7SegmentPlatformImp();
+
+    std::string volt_str = "volt";
+    std::string curr_str = "curr";
+
+    sf::RenderWindow& m_window = sim->getWindow();
+
+    while (m_window.isOpen()) {
         sf::Event event;
-        while (window.pollEvent(event)) {
+        while (m_window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
-                window.close();
+                m_window.close();
         }
 
-        window.clear();
-        drawNumberString(window, number, {50, 50}, 60);
-        window.display();
+        m_window.clear();
+
+        sim->updateRawBuffer(volt_str, volt[i]);
+        sim->updateRawBuffer(curr_str, curr[i]);
+        
+        m_window.display();
+        i++;
+        if(i >= 5)
+        {
+            i = 0;
+        }
+        usleep(1000 * 1000);
     }
+
+    delete sim;
 
     return 0;
 }
-
 
 void drawDigit(sf::RenderWindow& window, int digit, sf::Vector2f position, float size, bool showDot)
 {
@@ -75,6 +165,8 @@ void drawNumberString(sf::RenderWindow& window, const std::string& number, sf::V
     float spacing = size + size / 4;
 
     unsigned char num_count = 0;
+
+    constexpr int NUM_DIGITS = 4;
 
     for (size_t i = 0; num_count < NUM_DIGITS; ++i) {
         char ch = number[i];
