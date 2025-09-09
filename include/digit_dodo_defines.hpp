@@ -1,7 +1,7 @@
 #pragma once
 
 // Segment order: A, B, C, D, E, F, G, DOT
-const bool segmentMap[10][8] = {
+const bool segmentDigitMap[10][8] = {
     {1,1,1,1,1,1,0,0}, // 0
     {0,1,1,0,0,0,0,0}, // 1
     {1,1,0,1,1,0,1,0}, // 2

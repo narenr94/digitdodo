@@ -1,8 +1,10 @@
 #include "digit_dodo_defines.hpp"
 #include "digit_dodo_sim.hpp"
+#include "digit_dodo.hpp"
 
 #include <cassert>
 #include <unistd.h>
+#include <iostream>
 
 void drawDigit(sf::RenderWindow& window, int digit, sf::Vector2f position, float size, bool showDot);
 void drawNumberString(sf::RenderWindow& window, const std::string& number, sf::Vector2f startPos, float size);
@@ -86,26 +88,39 @@ int main()
     curr.push_back("01.42");
     curr.push_back("11.42");
 
-    SimI7SegmentPlatformImp* sim = new SimI7SegmentPlatformImp();
+    I7SegmentPlatform* sim = new SimI7SegmentPlatformImp();
+
+    digit_dodo* mid = new digit_dodo(sim);
 
     std::string volt_str = "volt";
     std::string curr_str = "curr";
 
-    sf::RenderWindow& m_window = sim->getWindow();
+    sf::RenderWindow* m_window = nullptr;
 
-    while (m_window.isOpen()) {
+    if (auto* simImp = dynamic_cast<SimI7SegmentPlatformImp*>(sim))
+    {
+        m_window = &simImp->getWindow();
+    }
+    else
+    {
+        std::cout << " cant dynamic cast\n";
+        return -1;
+    }
+
+
+    while (m_window->isOpen()) {
         sf::Event event;
-        while (m_window.pollEvent(event)) {
+        while (m_window->pollEvent(event)) {
             if (event.type == sf::Event::Closed)
-                m_window.close();
+                m_window->close();
         }
 
-        m_window.clear();
+        m_window->clear();
 
-        sim->updateRawBuffer(volt_str, volt[i]);
-        sim->updateRawBuffer(curr_str, curr[i]);
+        mid->update_display_value(volt_str, volt[i]);
+        mid->update_display_value(curr_str, curr[i]);
         
-        m_window.display();
+        m_window->display();
         i++;
         if(i >= 5)
         {
@@ -123,7 +138,7 @@ void drawDigit(sf::RenderWindow& window, int digit, sf::Vector2f position, float
 {
     float thickness = size / 10;
     sf::Color onColor = sf::Color::Red;
-    sf::Color offColor = sf::Color(50, 50, 50);
+    sf::Color offColor = sf::Color(10, 10, 10);
 
     std::vector<sf::RectangleShape> segments(7);
     sf::CircleShape dot(thickness / 2);
@@ -151,7 +166,7 @@ void drawDigit(sf::RenderWindow& window, int digit, sf::Vector2f position, float
 
     // Draw segments
     for (int i = 0; i < 7; ++i) {
-        segments[i].setFillColor(segmentMap[digit][i] ? onColor : offColor);
+        segments[i].setFillColor(segmentDigitMap[digit][i] ? onColor : offColor);
         window.draw(segments[i]);
     }
 

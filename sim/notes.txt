@@ -1,1 +1,1 @@
-g++ digit_dodo_sim.cpp -o sim -lsfml-graphics -lsfml-window -lsfml-system -I ../include
+g++ digit_dodo_sim.cpp ../src/digit_dodo.cpp -o sim -lsfml-graphics -lsfml-window -lsfml-system -I ../include -I ../include/platform_contracts
