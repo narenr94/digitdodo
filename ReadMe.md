@@ -1,6 +1,6 @@
 <!-- Logo Section -->
 <p align="center">
-  <img src="https://github.com/YOUR_USERNAME/digitdodo/blob/extended/digitdodo_logo.png?raw=true" alt="DigitDodo Logo" width="180"/>
+  <img src="https://github.com/narenr94/digitdodo/blob/extended/digitdodo_logo.png?raw=true" alt="DigitDodo Logo" width="180"/>
 </p>
 
 <h1 align="center">DigitDodo</h1>
