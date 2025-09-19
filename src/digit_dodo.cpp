@@ -1,34 +1,98 @@
-#include "digit_dodo.hpp"
+#include "digit_dodo.h"
+#include "digit_dodo_defines.h"
 
+bool isCharValid(digit_dodo_platform::SegmentDisplayType t_type, unsigned char t_char);
 
-std::shared_ptr<digit_dodo> s_pInstance = nullptr;
+unsigned char getCharSegments(digit_dodo_platform::SegmentDisplayType t_type, unsigned char t_char);
 
-digit_dodo::digit_dodo(I7SegmentPlatform* t_platform_impl)
+digit_dodo& digit_dodo::getInstance()
 {
-    m_platform_impl = t_platform_impl;
+    static digit_dodo instance;
+    return instance;
+}
 
-    for(int i = 0; i < m_platform_impl->getGroups().size(); i++)
+digit_dodo::digit_dodo(): m_groups(digit_dodo_platform::getGroups())
+{
+    m_display_mode.resize(m_groups.size(), SevenSegmentDisplayMode::Normal);
+}
+
+bool digit_dodo::update_display_value(const std::string& t_group_name, const std::string& t_value)
+{
+    bool group_found = false;
+    int group_size = 0;
+    int group_index = -1;
+
+    for(int i = 0; i < m_groups.size(); ++i)    
     {
-        m_display_mode.push_back(SevenSegmentDisplayMode::Normal);
+        if(m_groups[i].name == t_group_name)
+        {
+            group_found = true;
+            group_size = m_groups[i].length;
+            group_index = i;
+            break;
+        }
     }
+
+    if(!group_found)
+        return group_found;
+
+    std::vector<unsigned char> raw_buffer(group_size, 0);
+    unsigned char temp_buffer = 0;
+
+    int digit_count = 0;
+
+    for(int i = 0; i < t_value.size() && digit_count < group_size; ++i)
+    {
+        if(t_value[i] == '.') // Skip dots, they are handled with the previous character
+            continue;
+
+        if(isCharValid(m_groups[group_index].type[digit_count], t_value[i]))
+        {
+            temp_buffer = getCharSegments(m_groups[group_index].type[digit_count], t_value[i]);
+        }
+        else
+        {
+            temp_buffer = 0; // Invalid character, turn off segments
+        }
+
+        if(i < t_value.size() - 1 && t_value[i + 1] == '.')
+        {
+            temp_buffer |= 0b00000001; // Set DOT segment
+        }
+
+        raw_buffer[digit_count] = temp_buffer;
+
+        digit_count++;
+    }
+
+    digit_dodo_platform::updateRawBuffer(t_group_name, raw_buffer);
+
+    return group_found;
 }
 
-void digit_dodo::update_display_value(const std::string& t_group_name, const std::string& t_value)
+bool isCharValid(digit_dodo_platform::SegmentDisplayType t_type, unsigned char t_char)
 {
-    m_platform_impl->updateRawBuffer(t_group_name, t_value);
+    bool valid = false;
+
+    if(t_type == digit_dodo_platform::SegmentDisplayType::SEG_7)
+    {
+        valid = (t_char >= '0' && t_char <= '9') || (t_char == '.');
+    }
+
+    return valid;
 }
 
-void digit_dodo::set_mode_normal()
+unsigned char getCharSegments(digit_dodo_platform::SegmentDisplayType t_type, unsigned char t_char)
 {
+    unsigned char segments = 0;
 
-}
-
-void digit_dodo::set_mode_blink(unsigned int t_on_ticks, unsigned int t_off_ticks)
-{
-
-}
-
-void digit_dodo::set_mode_scroll(unsigned int t_scroll_speed)
-{
-
+    if(t_type == digit_dodo_platform::SegmentDisplayType::SEG_7)
+    {
+        if(t_char >= '0' && t_char <= '9')
+        {
+            segments = sevenSegmentDigitMap[t_char - '0'];
+        }
+    }
+    
+    return segments;
 }
