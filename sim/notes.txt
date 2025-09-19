@@ -1,1 +1,4 @@
-g++ digit_dodo_sim.cpp digit_dodo_platform.cpp ../src/digit_dodo.cpp -o sim -lsfml-graphics -lsfml-window -lsfml-system -I ../include -I ../include/platform_contracts
+g++ digitdodo_sim.cpp digitdodo_platform.cpp ../src/digitdodo.cpp -o sim -lsfml-graphics -lsfml-window -lsfml-system -I ../include -I ../include/platform_contracts
+
+
+export LD_LIBRARY_PATH=/home/user/DigitDodo/digitdodo/build/lib:$LD_LIBRARY_PATH

@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-namespace digit_dodo_platform {
+namespace digitdodo_platform {
 
 enum class SegmentDisplayType {
     SEG_7,
@@ -30,4 +30,4 @@ struct HardwareGroup{
 std::vector<HardwareGroup>& getGroups();
 void updateRawBuffer(const std::string& t_group_name, std::vector<unsigned char>& buffer);
 
-} // namespace digit_dodo_platform
+} // namespace digitdodo_platform

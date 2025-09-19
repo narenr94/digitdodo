@@ -1,6 +1,7 @@
 #pragma once
 
-#include "digit_dodo_platform.h"
+#include "digitdodo_platform.h"
+#include "ticktoucan.h"
 
 #include <string>
 #include <memory>
@@ -10,17 +11,17 @@
 enum class SevenSegmentDisplayMode { Normal, Blink, Scroll };
 
 
-class digit_dodo{
+class digitdodo{
 
-    std::vector<digit_dodo_platform::HardwareGroup>& m_groups;
+    std::vector<digitdodo_platform::HardwareGroup>& m_groups;
 
     std::vector<SevenSegmentDisplayMode> m_display_mode;
 
-    digit_dodo();
+    digitdodo();
 
     public:
 
-    static digit_dodo& getInstance();    
+    static digitdodo& getInstance();    
 
     bool update_display_value(const std::string& t_group_name, const std::string& t_value);
 

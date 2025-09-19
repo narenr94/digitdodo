@@ -1,5 +1,5 @@
-#include "digit_dodo_sim.h"
-#include "digit_dodo.h"
+#include "digitdodo_sim.h"
+#include "digitdodo.h"
 
 #include <unistd.h>
 #include <vector>
@@ -12,7 +12,7 @@ int main() {
     std::vector<std::string> volt = { "10.01", "11.11", "12.21", "20.31", "204.1" };
     std::vector<std::string> curr = { "01.22", "11.22", "21.32", "01.42", "11.42" };
 
-    digit_dodo& dodo = digit_dodo::getInstance();
+    digitdodo& dodo = digitdodo::getInstance();
 
     initWindow(800, 800, "DigitDodo 7-Segment");
 

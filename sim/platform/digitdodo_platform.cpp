@@ -1,22 +1,21 @@
-#include "digit_dodo_platform.h"
-#include "digit_dodo_sim.h"
-#include "digit_dodo_defines.h"
+#include "digitdodo_platform.h"
+#include "digitdodo_sim.h"
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <string>
 
-std::vector<digit_dodo_platform::HardwareGroup> hardwareGroups = {
-    digit_dodo_platform::HardwareGroup("volt", {digit_dodo_platform::SegmentDisplayType::SEG_7, digit_dodo_platform::SegmentDisplayType::SEG_7, digit_dodo_platform::SegmentDisplayType::SEG_7, digit_dodo_platform::SegmentDisplayType::SEG_7}),
-    digit_dodo_platform::HardwareGroup("curr", {digit_dodo_platform::SegmentDisplayType::SEG_7, digit_dodo_platform::SegmentDisplayType::SEG_7, digit_dodo_platform::SegmentDisplayType::SEG_7, digit_dodo_platform::SegmentDisplayType::SEG_7})
+std::vector<digitdodo_platform::HardwareGroup> hardwareGroups = {
+    digitdodo_platform::HardwareGroup("volt", {digitdodo_platform::SegmentDisplayType::SEG_7, digitdodo_platform::SegmentDisplayType::SEG_7, digitdodo_platform::SegmentDisplayType::SEG_7, digitdodo_platform::SegmentDisplayType::SEG_7}),
+    digitdodo_platform::HardwareGroup("curr", {digitdodo_platform::SegmentDisplayType::SEG_7, digitdodo_platform::SegmentDisplayType::SEG_7, digitdodo_platform::SegmentDisplayType::SEG_7, digitdodo_platform::SegmentDisplayType::SEG_7})
 };
 
-std::vector<digit_dodo_platform::HardwareGroup>& digit_dodo_platform::getGroups() {
+std::vector<digitdodo_platform::HardwareGroup>& digitdodo_platform::getGroups() {
     return hardwareGroups;
 }
 
 void drawNumber(const std::string& group, const std::vector<unsigned char>& number);
 
-void digit_dodo_platform::updateRawBuffer(const std::string& t_group_name, std::vector<unsigned char>& buffer)
+void digitdodo_platform::updateRawBuffer(const std::string& t_group_name, std::vector<unsigned char>& buffer)
 {
     drawNumber(t_group_name, buffer); // Draw new display
 }
