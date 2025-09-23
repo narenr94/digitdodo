@@ -43,8 +43,6 @@ fi
 
 cd ticktoucan
 
-# git clone https://github.com/narenr94/ticktoucan.git
-
 #setup ticktoucan
 if [ -d "./ticktoucan" ]; then
     echo "ticktoucan directory already exists!!!"
@@ -56,31 +54,9 @@ else
     git clone https://github.com/narenr94/ticktoucan.git
 fi
 
-if [ ! -d "./tt_platform" ]; then
-    mkdir tt_platform
-fi
+cd ./ticktoucan
 
-cd tt_platform
-
-PKG_CONFIG_PATH=${LOCAL_DEPS_BUILD_DIR}/lib/pkgconfig cmake ../ticktoucan/sim/ -DCMAKE_INSTALL_PREFIX=${LOCAL_DEPS_BUILD_DIR}
-make
-make install
-
-echo -e 'prefix='$LOCAL_DEPS_BUILD_DIR'/lib \nexec_prefix='$LOCAL_DEPS_BUILD_DIR' \nlibdir='$LOCAL_DEPS_BUILD_DIR'/lib \nincludedir='$LOCAL_DEPS_BUILD_DIR'/include \n \nName: ticktoucanplatform \nDescription: platform implementation of tick toucan \nVersion: 1.0 \nLibs: -L${libdir} -lticktoucanplatform \nCflags: -I${includedir}' > $LOCAL_DEPS_BUILD_DIR/lib/pkgconfig/libticktoucanplatform.pc
-
-cd ..
-
-if [ ! -d "./tt_middleware" ]; then
-    mkdir tt_middleware
-fi
-
-cd tt_middleware
-
-PKG_CONFIG_PATH=${LOCAL_DEPS_BUILD_DIR}/lib/pkgconfig cmake ../ticktoucan/ -DCMAKE_INSTALL_PREFIX=${LOCAL_DEPS_BUILD_DIR}
-make
-make install
-
-echo -e 'prefix='$LOCAL_DEPS_BUILD_DIR'/lib \nexec_prefix='$LOCAL_DEPS_BUILD_DIR' \nlibdir='$LOCAL_DEPS_BUILD_DIR'/lib \nincludedir='$LOCAL_DEPS_BUILD_DIR'/include \n \nName: ticktoucan \nDescription: middleware implementation of tick toucan \nVersion: 1.0 \nLibs: -L${libdir} -lticktoucan \nCflags: -I${includedir}' > $LOCAL_DEPS_BUILD_DIR/lib/pkgconfig/libticktoucan.pc
+bash ./install-sim.sh $LOCAL_DEPS_BUILD_DIR
 
 cd ../../
 
@@ -112,7 +88,20 @@ fi
 
 cd dd_middleware
 
-PKG_CONFIG_PATH=${LOCAL_DEPS_BUILD_DIR}/lib/pkgconfig cmake ../../../sim -DCMAKE_INSTALL_PREFIX=${LOCAL_DEPS_BUILD_DIR}
+PKG_CONFIG_PATH=${LOCAL_DEPS_BUILD_DIR}/lib/pkgconfig cmake ../../../ -DCMAKE_INSTALL_PREFIX=${LOCAL_DEPS_BUILD_DIR}
 make
 make install
 
+echo -e 'prefix='$LOCAL_DEPS_BUILD_DIR'/lib \nexec_prefix='$LOCAL_DEPS_BUILD_DIR' \nlibdir='$LOCAL_DEPS_BUILD_DIR'/lib \nincludedir='$LOCAL_DEPS_BUILD_DIR'/include \n \nName: digitdodo \nDescription: middleware implementation of digit dodo \nVersion: 1.0 \nLibs: -L${libdir} -ldigitdodo \nCflags: -I${includedir}' > $LOCAL_DEPS_BUILD_DIR/lib/pkgconfig/libdigitdodo.pc
+
+cd ..
+
+if [ ! -d "./dd_sim" ]; then
+    mkdir dd_sim
+fi
+
+cd dd_sim
+
+PKG_CONFIG_PATH=${LOCAL_DEPS_BUILD_DIR}/lib/pkgconfig cmake ../../../sim/ -DCMAKE_INSTALL_PREFIX=${LOCAL_DEPS_BUILD_DIR}
+make
+make install
