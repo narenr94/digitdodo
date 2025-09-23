@@ -1,3 +1,5 @@
+set(CMAKE_BUILD_TYPE Debug)
+
 # Source files in src 
 set(DD_FILES digitdodo.cpp)
 

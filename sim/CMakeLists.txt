@@ -1,3 +1,5 @@
+set(CMAKE_BUILD_TYPE Debug)
+
 find_package(PkgConfig REQUIRED)
 
 pkg_check_modules(DIGITDODO_PLATFORM REQUIRED libdigitdodoplatform)

@@ -43,7 +43,18 @@ fi
 
 cd ticktoucan
 
-git clone https://github.com/narenr94/ticktoucan.git
+# git clone https://github.com/narenr94/ticktoucan.git
+
+#setup ticktoucan
+if [ -d "./ticktoucan" ]; then
+    echo "ticktoucan directory already exists!!!"
+elif [ -d "../../../ticktoucan" ]; then
+    echo "local ticktoucan found ... copying ..."
+    cp -r ../../../ticktoucan ./
+else
+    echo "Installing ticktoucan..."
+    git clone https://github.com/narenr94/ticktoucan.git
+fi
 
 if [ ! -d "./tt_platform" ]; then
     mkdir tt_platform
