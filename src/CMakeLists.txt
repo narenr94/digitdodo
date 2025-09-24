@@ -1,5 +1,7 @@
 set(CMAKE_BUILD_TYPE Debug)
 
+option(ENABLE_LOG "Enable logging" OFF)
+
 # Source files in src 
 set(DD_FILES digitdodo.cpp)
 
@@ -17,6 +19,15 @@ include_directories(${DIGITDODO_PLATFORM_INCLUDE_DIRS})
 
 # Create the main library from src 
 add_library(digitdodo SHARED ${DD_FILES})
+
+if(ENABLE_LOG)
+    message(STATUS "Logging enabled")
+    add_compile_definitions(ENABLE_LOG)
+else()
+    message(STATUS "Logging disabled")
+endif()
+
+
 target_include_directories(digitdodo PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
 target_link_libraries(digitdodo ${DIGITDODO_PLATFORM_LINK_LIBRARIES})

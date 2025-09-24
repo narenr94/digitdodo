@@ -26,6 +26,7 @@ class digitdodo{
 
     std::unordered_map<std::string, bool> m_group_visibility;
 
+    std::unordered_map<std::string, int> m_group_scroll_position;
 
     digitdodo();
 
@@ -41,18 +42,33 @@ class digitdodo{
 
     void log_digitdodo(const char* format, ...);
 
+    bool set_scroll_mode(const std::string& t_group_name, unsigned int t_speed_ms);
+
+    static void scroll_text(void* ctx);
+
+    std::string populate_scrolled_value(std::string& group_name);
+
     public:
 
-    static digitdodo& getInstance();    
+    enum ScrollDirection { LeftToRight, RightToLeft };
+
+    static digitdodo& getInstance();  
+    
+    bool update_display(const std::string& t_group_name);
 
     bool update_display_value(const std::string& t_group_name, const std::string& t_value, bool t_update_raw = false);
 
-    bool update_display(const std::string& t_group_name);
-
+    bool update_segment_output(const std::string& t_group_name, const std::string& t_value);
+    
     bool set_display_mode(const std::string& t_group_name, SevenSegmentDisplayMode t_mode, unsigned int t_param);
 
     std::unordered_map<std::string, std::string>& get_display_values();
 
     void turn_off_group(const std::string& t_group_name);
 
+    void set_scroll_direction(const std::string& t_group_name, ScrollDirection t_direction);    
+
+    private:
+
+    std::unordered_map<std::string, ScrollDirection> m_group_scroll_direction;
 };

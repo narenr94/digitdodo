@@ -88,7 +88,7 @@ fi
 
 cd dd_middleware
 
-PKG_CONFIG_PATH=${LOCAL_DEPS_BUILD_DIR}/lib/pkgconfig cmake ../../../ -DCMAKE_INSTALL_PREFIX=${LOCAL_DEPS_BUILD_DIR}
+PKG_CONFIG_PATH=${LOCAL_DEPS_BUILD_DIR}/lib/pkgconfig cmake ../../../ -DCMAKE_INSTALL_PREFIX=${LOCAL_DEPS_BUILD_DIR} -DENABLE_LOG=ON
 make
 make install
 

@@ -6,7 +6,8 @@
 
 std::vector<digitdodo_platform::HardwareGroup> hardwareGroups = {
     digitdodo_platform::HardwareGroup("volt", {digitdodo_platform::SegmentDisplayType::SEG_7, digitdodo_platform::SegmentDisplayType::SEG_7, digitdodo_platform::SegmentDisplayType::SEG_7, digitdodo_platform::SegmentDisplayType::SEG_7}),
-    digitdodo_platform::HardwareGroup("curr", {digitdodo_platform::SegmentDisplayType::SEG_7, digitdodo_platform::SegmentDisplayType::SEG_7, digitdodo_platform::SegmentDisplayType::SEG_7, digitdodo_platform::SegmentDisplayType::SEG_7})
+    digitdodo_platform::HardwareGroup("curr", {digitdodo_platform::SegmentDisplayType::SEG_7, digitdodo_platform::SegmentDisplayType::SEG_7, digitdodo_platform::SegmentDisplayType::SEG_7, digitdodo_platform::SegmentDisplayType::SEG_7}),
+    digitdodo_platform::HardwareGroup("ad", {digitdodo_platform::SegmentDisplayType::SEG_7, digitdodo_platform::SegmentDisplayType::SEG_7, digitdodo_platform::SegmentDisplayType::SEG_7, digitdodo_platform::SegmentDisplayType::SEG_7, digitdodo_platform::SegmentDisplayType::SEG_7})
 };
 
 std::vector<digitdodo_platform::HardwareGroup>& digitdodo_platform::getGroups() {
@@ -113,4 +114,6 @@ void drawNumber(const std::string& group, const std::vector<unsigned char>& numb
         drawNumberString(number, {50, 50}, 60);
     else if (group == "curr")
         drawNumberString(number, {50, 250}, 60);
+    else if (group == "ad")
+        drawNumberString(number, {50, 450}, 60);
 }
