@@ -10,7 +10,8 @@
 std::vector<std::string> volt = { "12.34567", "11.11", "12.21", "20.31", "204.1" };
 std::vector<std::string> curr = { "01.22", "11.22", "21.32", "01.42", "11.42" };
 
-std::string scroll_val = "01.23456789";
+std::string scroll_val =
+    "012.3-456=7 89.-_:,=+?!*%#@;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz()<>[]{}$&^`~|";
 
 int i = 0;
 
@@ -59,13 +60,11 @@ int main() {
 
     dodo.update_display_value("ad", scroll_val);
 
-    dodo.set_scroll_direction("ad", digitdodo::ScrollDirection::LeftToRight); 
+    dodo.set_scroll_direction("ad", digitdodo::ScrollDirection::RightToLeft); 
 
     dodo.set_display_mode("ad", SevenSegmentDisplayMode::Scroll, 500);
 
     tt.scheduleEvery(1500, &update_trampolines, (void*)dodo.get_display_values().find("volt")->first.c_str(), 5000);
-
-    tt.scheduleEvery(20000, &toggle_scroll_direction, (void*)dodo.get_display_values().find("ad")->first.c_str(), 5000);
 
     while (windowIsOpen()) {
 

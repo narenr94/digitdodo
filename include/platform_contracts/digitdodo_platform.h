@@ -32,7 +32,7 @@ struct HardwareGroup{
 
     std::string name;                       /**< Human-readable group identifier. */
     int length;                             /**< Number of digit positions in the group. */
-    std::vector<SegmentDisplayType> type;   /**< Per-position segment type list. */
+    SegmentDisplayType type;                /**< Per-position segment type list. */
 
     /**
      * @brief Construct a HardwareGroup.
@@ -41,11 +41,11 @@ struct HardwareGroup{
      *
      * The group's length is derived from the size of @p t_type.
      */
-    HardwareGroup(std::string t_name, std::vector<SegmentDisplayType> t_type)
+    HardwareGroup(std::string t_name, SegmentDisplayType t_type, int t_length)
     {
         name = t_name;
         type = t_type;
-        length = t_type.size();
+        length = t_length;
     }
 
 };

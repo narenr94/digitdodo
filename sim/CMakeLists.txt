@@ -13,6 +13,7 @@ find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
 set(DD_FILES digitdodo_sim.cpp)
 
 include_directories(${CMAKE_SOURCE_DIR}/../include/platform_contracts)
+include_directories(${CMAKE_SOURCE_DIR}/../include/digitDisplay)
 include_directories(${CMAKE_SOURCE_DIR}/../include/)
 include_directories(${TICKTOUCAN_INCLUDE_DIRS})
 include_directories(${TICKTOUCAN_PLATFORM_INCLUDE_DIRS})

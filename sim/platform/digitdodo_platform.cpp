@@ -5,9 +5,9 @@
 #include <string>
 
 std::vector<digitdodo_platform::HardwareGroup> hardwareGroups = {
-    digitdodo_platform::HardwareGroup("volt", {digitdodo_platform::SegmentDisplayType::SEG_7, digitdodo_platform::SegmentDisplayType::SEG_7, digitdodo_platform::SegmentDisplayType::SEG_7, digitdodo_platform::SegmentDisplayType::SEG_7}),
-    digitdodo_platform::HardwareGroup("curr", {digitdodo_platform::SegmentDisplayType::SEG_7, digitdodo_platform::SegmentDisplayType::SEG_7, digitdodo_platform::SegmentDisplayType::SEG_7, digitdodo_platform::SegmentDisplayType::SEG_7}),
-    digitdodo_platform::HardwareGroup("ad", {digitdodo_platform::SegmentDisplayType::SEG_7, digitdodo_platform::SegmentDisplayType::SEG_7, digitdodo_platform::SegmentDisplayType::SEG_7, digitdodo_platform::SegmentDisplayType::SEG_7, digitdodo_platform::SegmentDisplayType::SEG_7})
+    digitdodo_platform::HardwareGroup("volt", digitdodo_platform::SegmentDisplayType::SEG_7, 4),
+    digitdodo_platform::HardwareGroup("curr", digitdodo_platform::SegmentDisplayType::SEG_7, 4),
+    digitdodo_platform::HardwareGroup("ad", digitdodo_platform::SegmentDisplayType::SEG_7, 6)
 };
 
 std::vector<digitdodo_platform::HardwareGroup>& digitdodo_platform::getGroups() {

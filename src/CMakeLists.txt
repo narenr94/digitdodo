@@ -5,12 +5,15 @@ option(ENABLE_LOG "Enable logging" OFF)
 # Source files in src 
 set(DD_FILES digitdodo.cpp)
 
+set(DDisp_FILES digitDisplay/sevenDigitDisplay.cpp)
+
 pkg_check_modules(DIGITDODO_PLATFORM REQUIRED libdigitdodoplatform)
 pkg_check_modules(TICKTOUCAN_PLATFORM REQUIRED libticktoucanplatform)
 pkg_check_modules(TICKTOUCAN REQUIRED libticktoucan)
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories(${CMAKE_SOURCE_DIR}/include/platform_contracts)
+include_directories(${CMAKE_SOURCE_DIR}/include/digitDisplay)
 include_directories(${TICKTOUCAN_INCLUDE_DIRS})
 include_directories(${TICKTOUCAN_PLATFORM_INCLUDE_DIRS})
 include_directories(${DIGITDODO_PLATFORM_INCLUDE_DIRS})
@@ -18,7 +21,7 @@ include_directories(${DIGITDODO_PLATFORM_INCLUDE_DIRS})
 
 
 # Create the main library from src 
-add_library(digitdodo SHARED ${DD_FILES})
+add_library(digitdodo SHARED ${DD_FILES} ${DDisp_FILES})
 
 if(ENABLE_LOG)
     message(STATUS "Logging enabled")

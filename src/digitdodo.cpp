@@ -1,5 +1,6 @@
 #include "digitdodo.h"
-#include "digitdodo_defines.h"
+#include "baseDigitDisplay.h"
+#include "sevenDigitDisplay.h"
 
 #include <cstdio>
 
@@ -23,6 +24,16 @@ digitdodo::digitdodo(): m_groups(digitdodo_platform::getGroups())
         m_group_visibility[group.name] = true;
         m_group_scroll_direction[group.name] = digitdodo::ScrollDirection::RightToLeft; // true = right to left
         m_group_scroll_position[group.name] = 0;
+        switch (group.type)
+        {
+            case digitdodo_platform::SegmentDisplayType::SEG_7:
+                m_display_types[group.name] = new SevenDigitDisplay();
+                break;
+            
+            default:
+                break;
+        }
+
     }
 
 }
@@ -40,36 +51,8 @@ int digitdodo::get_group_index(const std::string& t_group_name)
 }
 
 bool digitdodo::update_segment_output(const std::string& t_group_name, const std::string& t_value)
-{
-    int group_index = get_group_index(t_group_name);
-    int group_size = m_groups[group_index].length;
-    std::vector<unsigned char> raw_buffer;
-    raw_buffer.reserve(group_size);
-
-    for (size_t i = 0, digit_count = 0; i < t_value.size() && digit_count < group_size; ++i)
-    {
-        unsigned char c = t_value[i];
-        if (!isCharValid(m_groups[group_index].type[digit_count], c) || c == '.')
-        {
-            continue;
-        }
-            
-
-        unsigned char seg = getCharSegments(m_groups[group_index].type[digit_count], c);
-
-        // Check if next character is a dot
-        if (i + 1 < t_value.size() && t_value[i + 1] == '.')
-        {
-            seg |= 0x01;
-        }
-
-        raw_buffer.push_back(seg);
-        ++digit_count;
-    }
-
-    // Pad with zeros if not enough digits
-    while (raw_buffer.size() < group_size)
-        raw_buffer.push_back(0);
+{    
+    std::vector<unsigned char> raw_buffer = m_display_types[t_group_name]->getRawBuffer(t_value, m_groups[get_group_index(t_group_name)].length);
 
     digitdodo_platform::updateRawBuffer(t_group_name, raw_buffer);
 
@@ -93,39 +76,6 @@ bool digitdodo::update_display_value(const std::string& t_group_name, const std:
     }
 
     return true;
-}
-
-bool isCharValid(digitdodo_platform::SegmentDisplayType t_type, unsigned char t_char)
-{
-    bool valid = false;
-
-    if(t_type == digitdodo_platform::SegmentDisplayType::SEG_7)
-    {
-        valid |= (t_char >= '0' && t_char <= '9') || (t_char == '.');
-        valid |= (t_char == ' ');
-
-    }
-
-    return valid;
-}
-
-unsigned char getCharSegments(digitdodo_platform::SegmentDisplayType t_type, unsigned char t_char)
-{
-    unsigned char segments = 0;
-
-    if(t_type == digitdodo_platform::SegmentDisplayType::SEG_7)
-    {
-        if(t_char >= '0' && t_char <= '9')
-        {
-            segments = sevenSegmentDigitMap[t_char - '0'];
-        }
-        else if(t_char == ' ')
-        {
-            segments = sevenSegmentCharMap[' '];
-        }
-    }
-    
-    return segments;
 }
 
 bool digitdodo::set_display_mode(const std::string& t_group_name, SevenSegmentDisplayMode t_mode, unsigned int t_param)
@@ -302,80 +252,7 @@ void digitdodo::scroll_text(void* ctx)
 
 std::string digitdodo::populate_scrolled_value(std::string& group_name)
 {
-    const std::string& original_value = m_display_values[group_name];
-    const int group_size = m_groups[get_group_index(group_name)].length;
-    const int padded_size = original_value.size() + group_size;
-    
-
-    std::string padded_value = original_value + std::string(group_size, ' ');
-    int& scroll_pos = m_group_scroll_position[group_name];
-
-    bool right_to_left = (m_group_scroll_direction[group_name] == ScrollDirection::RightToLeft);
-
-    log_digitdodo("Original value for group %s: '%s' scroll_pos:%d direction:%s\n",
-                  group_name.c_str(), original_value.c_str(), scroll_pos,
-                  right_to_left ? "RTL" : "LTR");
-
-    int digit_count = 0;
-    int i = 0;
-    bool leading_dot_skipped = false;
-
-    std::string scrolled;
-    scrolled.reserve(group_size);
-
-    while (digit_count < group_size)
-    {
-        int index;
-        if (right_to_left)
-        {
-            index = (scroll_pos + i) % padded_size;
-        }
-        else
-        {
-            index = scroll_pos - group_size + 1 + i;
-            if (index < 0) index += padded_size;
-            else if (index >= padded_size) index -= padded_size;
-        }
-
-        char c = padded_value[index];
-
-        if (digit_count == 0 && c == '.')
-        {
-            leading_dot_skipped = true;
-            if (right_to_left)
-            {
-                ++i;
-            }
-            else
-            {
-                i--;
-            }
-
-            continue;
-        }
-
-        scrolled += c;
-        if (c != '.')
-        {
-            ++digit_count;
-        }
-        ++i;
-    }
-
-    // Advance scroll position
-    if (right_to_left)
-    {
-        scroll_pos = (scroll_pos + 1 + (leading_dot_skipped ? 1 : 0)) % padded_size;
-    }
-    else
-    {
-        scroll_pos = (scroll_pos - 1 - (leading_dot_skipped ? 1 : 0) + padded_size) % padded_size;
-    }
-
-    log_digitdodo("Scrolled value for group %s: '%s' scroll_pos:%d\n",
-                  group_name.c_str(), scrolled.c_str(), scroll_pos);
-
-    return scrolled;
+    return m_display_types[group_name]->populate_scrolled_value(m_display_values[group_name], m_groups[get_group_index(group_name)].length, m_group_scroll_direction[group_name], m_group_scroll_position[group_name]);
 }
 
 

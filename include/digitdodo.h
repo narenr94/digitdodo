@@ -13,6 +13,9 @@
 
 enum class SevenSegmentDisplayMode { Normal, Blink, Scroll };
 
+//forward declaration
+class BaseDigitDisplay;
+
 
 class digitdodo{
 
@@ -27,6 +30,8 @@ class digitdodo{
     std::unordered_map<std::string, bool> m_group_visibility;
 
     std::unordered_map<std::string, int> m_group_scroll_position;
+
+    std::unordered_map<std::string, BaseDigitDisplay*> m_display_types;
 
     digitdodo();
 
