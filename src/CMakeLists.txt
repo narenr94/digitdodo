@@ -5,7 +5,8 @@ option(ENABLE_LOG "Enable logging" OFF)
 # Source files in src 
 set(DD_FILES digitdodo.cpp)
 
-set(DDisp_FILES digitDisplay/sevenDigitDisplay.cpp)
+set(DDisp_FILES digitDisplay/sevenDigitDisplay.cpp
+digitDisplay/fourteenDigitDisplay.cpp)
 
 pkg_check_modules(DIGITDODO_PLATFORM REQUIRED libdigitdodoplatform)
 pkg_check_modules(TICKTOUCAN_PLATFORM REQUIRED libticktoucanplatform)

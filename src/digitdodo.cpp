@@ -1,6 +1,7 @@
 #include "digitdodo.h"
 #include "baseDigitDisplay.h"
 #include "sevenDigitDisplay.h"
+#include "fourteenDigitDisplay.h"
 
 #include <cstdio>
 
@@ -28,6 +29,9 @@ digitdodo::digitdodo(): m_groups(digitdodo_platform::getGroups())
         {
             case digitdodo_platform::SegmentDisplayType::SEG_7:
                 m_display_types[group.name] = new SevenDigitDisplay();
+                break;
+            case digitdodo_platform::SegmentDisplayType::SEG_14:
+                m_display_types[group.name] = new FourteenDigitDisplay();
                 break;
             
             default:

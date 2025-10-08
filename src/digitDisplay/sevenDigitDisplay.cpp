@@ -10,11 +10,8 @@ static const std::unordered_map<unsigned char, unsigned char> sevenSegmentCharMa
     {'8', 0b11111110}, {'9', 0b11110110},
 
     // basic symbols
-    {' ', 0b00000000}, {'.', 0b00000001}, {'-', 0b00000010}, {'_', 0b00010000},
-    {':', 0b00000001}, {',', 0b00000001}, {'=', 0b00010010}, {'+', 0b01100110},
-    {'?', 0b11000110}, {'!', 0b01100000}, {'/', 0b01001000}, {'\\',0b00011000},
-    {'*', 0b01011010}, {'%', 0b11001001}, {'\'',0b00000000}, {'"', 0b01000100},
-    {'#', 0b01011010}, {'@', 0b11110110},
+    {' ', 0b00000000}, {'.', 0b00000001}, {'-', 0b00000010}, {'=', 0b00010010}, 
+    {'+', 0b01100110},
 
     // uppercase letters (best 7-seg approximations)
     {'A', 0b11101110}, {'B', 0b00111110}, {'C', 0b10011100}, {'D', 0b01111010},
@@ -32,15 +29,7 @@ static const std::unordered_map<unsigned char, unsigned char> sevenSegmentCharMa
     {'m', 0b01010101}, {'n', 0b00101010}, {'o', 0b00111010}, {'p', 0b11001110},
     {'q', 0b11100110}, {'r', 0b00001010}, {'s', 0b10110110}, {'t', 0b00011110},
     {'u', 0b00111000}, {'v', 0b00111000}, {'w', 0b01010101}, {'x', 0b01101110},
-    {'y', 0b01110110}, {'z', 0b11011010},
-
-    // brackets and angle symbols
-    {'(', 0b00011100}, {')', 0b01110000}, {'<', 0b10010000}, {'>', 0b00100100},
-    {'[', 0b10011100}, {']', 0b01110010}, {'{', 0b10011100}, {'}', 0b01110010},
-
-    // remaining common punctuation approximations
-    {';', 0b00000001}, {'$', 0b10110110}, {'&', 0b10111110}, {'^', 0b00000100},
-    {'`', 0b00000000}, {'~', 0b00000000}, {'|', 0b00001000}
+    {'y', 0b01110110}, {'z', 0b11011010}
 };
 
 bool isCharValid(unsigned char t_char)
@@ -53,16 +42,23 @@ bool isCharValid(unsigned char t_char)
         valid = true;
     }
 
-    if(sevenSegmentCharMap.at(t_char) == sevenSegmentCharMap.at('.'))
+    if(valid)
     {
-        valid = false; // standalone dot is not valid
-    }
+        if(sevenSegmentCharMap.at(t_char) == sevenSegmentCharMap.at('.'))
+        {
+            valid = false; // standalone dot is not valid
+        }
+    }    
 
     return valid;
 }
 
 unsigned char getCharSegments(unsigned char t_char)
 {
+    if(!isCharValid(t_char))
+    {
+        return sevenSegmentCharMap.at(' ');
+    }
     return sevenSegmentCharMap.at(t_char);
 }
 

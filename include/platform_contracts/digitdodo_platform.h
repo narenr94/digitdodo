@@ -15,6 +15,7 @@ namespace digitdodo_platform {
  */
 enum class SegmentDisplayType {
     SEG_7,      /**< Standard 7-segment digit (0-9, limited letters). */
+    SEG_9,      /**< 9-segment display for broader alphanumeric support. */
     SEG_14,     /**< 14-segment display for broader alphanumeric support. */
     SEG_16      /**< 16-segment display or other extended-segment variant. */
 };

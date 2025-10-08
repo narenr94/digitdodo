@@ -11,7 +11,7 @@ std::vector<std::string> volt = { "12.34567", "11.11", "12.21", "20.31", "204.1"
 std::vector<std::string> curr = { "01.22", "11.22", "21.32", "01.42", "11.42" };
 
 std::string scroll_val =
-    "012.3-456=7 89.-_:,=+?!*%#@;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz()<>[]{}$&^`~|";
+    "012.3-456=7 89.-_:,=+?!*%#@;ABCDEFGHIJKLMNOPQR.STUVWXYZabcdefghijklmnopqrstuvwxyz()<>[]{}$&^`~|";
 
 int i = 0;
 
@@ -54,15 +54,21 @@ int main() {
 
     initWindow(800, 800, "DigitDodo 7-Segment");
 
-    dodo.update_display_value("curr", curr[2]);
+    // dodo.update_display_value("curr", curr[2]);
 
-    dodo.set_display_mode("curr", SevenSegmentDisplayMode::Blink, 500);
+    // dodo.set_display_mode("curr", SevenSegmentDisplayMode::Blink, 500);
 
     dodo.update_display_value("ad", scroll_val);
 
     dodo.set_scroll_direction("ad", digitdodo::ScrollDirection::RightToLeft); 
 
     dodo.set_display_mode("ad", SevenSegmentDisplayMode::Scroll, 500);
+
+    dodo.update_display_value("14seg", scroll_val);
+
+    dodo.set_scroll_direction("14seg", digitdodo::ScrollDirection::RightToLeft); 
+
+    dodo.set_display_mode("14seg", SevenSegmentDisplayMode::Scroll, 500);
 
     tt.scheduleEvery(1500, &update_trampolines, (void*)dodo.get_display_values().find("volt")->first.c_str(), 5000);
 
