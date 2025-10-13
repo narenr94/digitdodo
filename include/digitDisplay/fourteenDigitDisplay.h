@@ -4,7 +4,11 @@
 
 class FourteenDigitDisplay : public BaseDigitDisplay
 {
+    std::vector<unsigned char> dp_char;
+
     public:
+
+    FourteenDigitDisplay();
     
     std::vector<unsigned char> getRawBuffer(const std::string& t_value, int group_size) override;
 

@@ -4,7 +4,11 @@
 
 class SevenDigitDisplay : public BaseDigitDisplay
 {
+    unsigned char dp_char;
+
     public:
+
+    SevenDigitDisplay();
     
     std::vector<unsigned char> getRawBuffer(const std::string& t_value, int group_size) override;
 

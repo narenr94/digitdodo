@@ -121,6 +121,11 @@ static const std::unordered_map<unsigned char, std::vector<unsigned char>> fourt
     {'+', { (unsigned char)(DIGITDODO_SEG14_G1 | DIGITDODO_SEG14_G2), (unsigned char)(DIGITDODO_SEG14_L | DIGITDODO_SEG14_M) }}
 };
 
+FourteenDigitDisplay::FourteenDigitDisplay()
+{
+    dp_char = getCharSegments('.');
+}
+
 std::vector<unsigned char> FourteenDigitDisplay::getRawBuffer(const std::string& t_value, int group_size)
 {
     std::vector<unsigned char> raw_buffer;
@@ -132,7 +137,7 @@ std::vector<unsigned char> FourteenDigitDisplay::getRawBuffer(const std::string&
 
         std::vector<unsigned char> seg = getCharSegments(c);
 
-        if (seg == getCharSegments('.'))
+        if (seg == dp_char)
         {
             continue;
         }             
@@ -140,7 +145,7 @@ std::vector<unsigned char> FourteenDigitDisplay::getRawBuffer(const std::string&
        
 
         // Check if next character is a dot
-        if (i + 1 < t_value.size() && (getCharSegments(t_value[i + 1]) == getCharSegments('.')))
+        if (i + 1 < t_value.size() && (getCharSegments(t_value[i + 1]) == dp_char))
         {
             seg[1] |= 0x40;
         }
@@ -190,7 +195,7 @@ std::string FourteenDigitDisplay::populate_scrolled_value(std::string& original_
         char c = padded_value[index];
         std::vector<unsigned char> seg = getCharSegments(c);
 
-        if ((digit_count == 0) && seg == getCharSegments('.'))
+        if ((digit_count == 0) && seg == dp_char)
         {
             non_displayable_char_count += 1;
             
@@ -207,7 +212,7 @@ std::string FourteenDigitDisplay::populate_scrolled_value(std::string& original_
         }
 
         scrolled += c;
-        if ((seg != getCharSegments('.')))
+        if (seg != dp_char)
         {
             ++digit_count;
         }

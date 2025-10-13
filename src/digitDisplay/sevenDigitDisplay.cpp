@@ -89,6 +89,11 @@ static const std::unordered_map<unsigned char, unsigned char> sevenSegmentCharMa
     {'z', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_B | DIGITDODO_SEG7_D | DIGITDODO_SEG7_E | DIGITDODO_SEG7_G}
 };
 
+SevenDigitDisplay::SevenDigitDisplay()
+{
+    dp_char = getCharSegments('.');
+}
+
 std::vector<unsigned char> SevenDigitDisplay::getRawBuffer(const std::string& t_value, int group_size)
 {
     std::vector<unsigned char> raw_buffer;
@@ -99,15 +104,15 @@ std::vector<unsigned char> SevenDigitDisplay::getRawBuffer(const std::string& t_
         unsigned char c = t_value[i];
         unsigned char seg = getCharSegments(c);
 
-        if (seg == getCharSegments('.'))
+        if (seg == dp_char)
         {
             continue;
         }        
 
         // Check if next character is a dot
-        if (i + 1 < t_value.size() && (getCharSegments(t_value[i + 1]) == getCharSegments('.')))
+        if (i + 1 < t_value.size() && (getCharSegments(t_value[i + 1]) == dp_char))
         {
-            seg |= getCharSegments('.');
+            seg |= dp_char;
         }
 
         raw_buffer.push_back(seg);
@@ -154,7 +159,7 @@ std::string SevenDigitDisplay::populate_scrolled_value(std::string& original_val
         char c = padded_value[index];
         unsigned char seg = getCharSegments(c);
 
-        if ((digit_count == 0) && seg == getCharSegments('.'))
+        if ((digit_count == 0) && seg == dp_char)
         {
             non_displayable_char_count += 1;
             
@@ -171,7 +176,7 @@ std::string SevenDigitDisplay::populate_scrolled_value(std::string& original_val
         }
 
         scrolled += c;
-        if (seg != getCharSegments('.'))
+        if (seg != dp_char)
         {
             ++digit_count;
         }
