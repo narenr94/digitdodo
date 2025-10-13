@@ -3,65 +3,91 @@
 
 #include <unordered_map>
 
+#define DIGITDODO_SEG7_A    0x01
+#define DIGITDODO_SEG7_B    0x02
+#define DIGITDODO_SEG7_C    0x04
+#define DIGITDODO_SEG7_D    0x08
+#define DIGITDODO_SEG7_E    0x10
+#define DIGITDODO_SEG7_F    0x20
+#define DIGITDODO_SEG7_G    0x40
+#define DIGITDODO_SEG7_DP   0x80
+
 static const std::unordered_map<unsigned char, unsigned char> sevenSegmentCharMap = {
     // digits
-    {'0', 0b11111100}, {'1', 0b01100000}, {'2', 0b11011010}, {'3', 0b11110010},
-    {'4', 0b01100110}, {'5', 0b10110110}, {'6', 0b10111110}, {'7', 0b11100000},
-    {'8', 0b11111110}, {'9', 0b11110110},
+    {'0', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_B | DIGITDODO_SEG7_C | DIGITDODO_SEG7_D | DIGITDODO_SEG7_E | DIGITDODO_SEG7_F},
+    {'1', (unsigned char) DIGITDODO_SEG7_B | DIGITDODO_SEG7_C},
+    {'2', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_B | DIGITDODO_SEG7_D | DIGITDODO_SEG7_E | DIGITDODO_SEG7_G},
+    {'3', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_B | DIGITDODO_SEG7_C | DIGITDODO_SEG7_D | DIGITDODO_SEG7_G},
+    {'4', (unsigned char) DIGITDODO_SEG7_B | DIGITDODO_SEG7_C | DIGITDODO_SEG7_F | DIGITDODO_SEG7_G},
+    {'5', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_C | DIGITDODO_SEG7_D | DIGITDODO_SEG7_F | DIGITDODO_SEG7_G},
+    {'6', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_C | DIGITDODO_SEG7_D | DIGITDODO_SEG7_E | DIGITDODO_SEG7_F | DIGITDODO_SEG7_G},
+    {'7', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_B | DIGITDODO_SEG7_C},
+    {'8', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_B | DIGITDODO_SEG7_C | DIGITDODO_SEG7_D | DIGITDODO_SEG7_E | DIGITDODO_SEG7_F | DIGITDODO_SEG7_G},
+    {'9', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_B | DIGITDODO_SEG7_C | DIGITDODO_SEG7_D | DIGITDODO_SEG7_F | DIGITDODO_SEG7_G},
 
     // basic symbols
-    {' ', 0b00000000}, {'.', 0b00000001}, {'-', 0b00000010}, {'=', 0b00010010}, 
-    {'+', 0b01100110},
+    {' ', (unsigned char) 0x00},
+    {'.', (unsigned char) DIGITDODO_SEG7_DP},
+    {'-', (unsigned char) DIGITDODO_SEG7_G},
+    {'_', (unsigned char) DIGITDODO_SEG7_D},   
+    {'=', (unsigned char) DIGITDODO_SEG7_D | DIGITDODO_SEG7_G},
 
     // uppercase letters (best 7-seg approximations)
-    {'A', 0b11101110}, {'B', 0b00111110}, {'C', 0b10011100}, {'D', 0b01111010},
-    {'E', 0b10011110}, {'F', 0b10001110}, {'G', 0b10111100}, {'H', 0b01101110},
-    {'I', 0b01100000}, {'J', 0b01110010}, {'K', 0b01101110}, {'L', 0b00011100},
-    {'M', 0b01010101}, {'N', 0b01010100}, {'O', 0b11111100}, {'P', 0b11001110},
-    {'Q', 0b11100110}, {'R', 0b00001010}, {'S', 0b10110110}, {'T', 0b00011110},
-    {'U', 0b01111100}, {'V', 0b00111000}, {'W', 0b01010101}, {'X', 0b01101110},
-    {'Y', 0b01110110}, {'Z', 0b11011010},
+    {'A', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_B | DIGITDODO_SEG7_C | DIGITDODO_SEG7_E | DIGITDODO_SEG7_F | DIGITDODO_SEG7_G},
+    {'B', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_B | DIGITDODO_SEG7_C | DIGITDODO_SEG7_D | DIGITDODO_SEG7_E | DIGITDODO_SEG7_F | DIGITDODO_SEG7_G},
+    {'C', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_D | DIGITDODO_SEG7_E | DIGITDODO_SEG7_F},
+    {'D', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_B | DIGITDODO_SEG7_C | DIGITDODO_SEG7_D | DIGITDODO_SEG7_E | DIGITDODO_SEG7_F},
+    {'E', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_D | DIGITDODO_SEG7_E | DIGITDODO_SEG7_F | DIGITDODO_SEG7_G},
+    {'F', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_E | DIGITDODO_SEG7_F | DIGITDODO_SEG7_G},
+    {'G', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_C | DIGITDODO_SEG7_D | DIGITDODO_SEG7_E | DIGITDODO_SEG7_F | DIGITDODO_SEG7_G},
+    {'H', (unsigned char) DIGITDODO_SEG7_B | DIGITDODO_SEG7_C | DIGITDODO_SEG7_E | DIGITDODO_SEG7_F | DIGITDODO_SEG7_G},
+    {'I', (unsigned char) DIGITDODO_SEG7_B | DIGITDODO_SEG7_C},
+    {'J', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_B | DIGITDODO_SEG7_C | DIGITDODO_SEG7_D},
+    {'K', (unsigned char) DIGITDODO_SEG7_B | DIGITDODO_SEG7_C | DIGITDODO_SEG7_E | DIGITDODO_SEG7_F | DIGITDODO_SEG7_G},
+    {'L', (unsigned char) DIGITDODO_SEG7_D | DIGITDODO_SEG7_E | DIGITDODO_SEG7_F},
+    {'M', (unsigned char) DIGITDODO_SEG7_B | DIGITDODO_SEG7_C | DIGITDODO_SEG7_E | DIGITDODO_SEG7_F | DIGITDODO_SEG7_G},
+    {'N', (unsigned char) DIGITDODO_SEG7_B | DIGITDODO_SEG7_C | DIGITDODO_SEG7_E | DIGITDODO_SEG7_F | DIGITDODO_SEG7_G},
+    {'O', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_B | DIGITDODO_SEG7_C | DIGITDODO_SEG7_D | DIGITDODO_SEG7_E | DIGITDODO_SEG7_F},
+    {'P', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_B | DIGITDODO_SEG7_E | DIGITDODO_SEG7_F | DIGITDODO_SEG7_G},
+    {'Q', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_B | DIGITDODO_SEG7_C | DIGITDODO_SEG7_D | DIGITDODO_SEG7_E | DIGITDODO_SEG7_F | DIGITDODO_SEG7_G},
+    {'R', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_B | DIGITDODO_SEG7_C | DIGITDODO_SEG7_E | DIGITDODO_SEG7_F | DIGITDODO_SEG7_G},
+    {'S', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_C | DIGITDODO_SEG7_D | DIGITDODO_SEG7_F | DIGITDODO_SEG7_G},
+    {'T', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_B | DIGITDODO_SEG7_C},
+    {'U', (unsigned char) DIGITDODO_SEG7_B | DIGITDODO_SEG7_C | DIGITDODO_SEG7_D | DIGITDODO_SEG7_E | DIGITDODO_SEG7_F},
+    {'V', (unsigned char) DIGITDODO_SEG7_B | DIGITDODO_SEG7_C | DIGITDODO_SEG7_D | DIGITDODO_SEG7_E | DIGITDODO_SEG7_F},
+    {'W', (unsigned char) DIGITDODO_SEG7_B | DIGITDODO_SEG7_C | DIGITDODO_SEG7_D | DIGITDODO_SEG7_E | DIGITDODO_SEG7_F},
+    {'X', (unsigned char) DIGITDODO_SEG7_B | DIGITDODO_SEG7_C | DIGITDODO_SEG7_E | DIGITDODO_SEG7_F | DIGITDODO_SEG7_G},
+    {'Y', (unsigned char) DIGITDODO_SEG7_B | DIGITDODO_SEG7_D | DIGITDODO_SEG7_F},
+    {'Z', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_B | DIGITDODO_SEG7_D | DIGITDODO_SEG7_E | DIGITDODO_SEG7_G},
 
     // lowercase letters (approximations where meaningful)
-    {'a', 0b11101110}, {'b', 0b00111110}, {'c', 0b10011010}, {'d', 0b01111010},
-    {'e', 0b11011110}, {'f', 0b10001110}, {'g', 0b11110110}, {'h', 0b00101110},
-    {'i', 0b00001000}, {'j', 0b01110000}, {'k', 0b01101110}, {'l', 0b00011100},
-    {'m', 0b01010101}, {'n', 0b00101010}, {'o', 0b00111010}, {'p', 0b11001110},
-    {'q', 0b11100110}, {'r', 0b00001010}, {'s', 0b10110110}, {'t', 0b00011110},
-    {'u', 0b00111000}, {'v', 0b00111000}, {'w', 0b01010101}, {'x', 0b01101110},
-    {'y', 0b01110110}, {'z', 0b11011010}
+    {'a', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_B | DIGITDODO_SEG7_C | DIGITDODO_SEG7_D | DIGITDODO_SEG7_E | DIGITDODO_SEG7_G},
+    {'b', (unsigned char) DIGITDODO_SEG7_C | DIGITDODO_SEG7_D | DIGITDODO_SEG7_E | DIGITDODO_SEG7_F | DIGITDODO_SEG7_G},
+    {'c', (unsigned char) DIGITDODO_SEG7_D | DIGITDODO_SEG7_E | DIGITDODO_SEG7_G},
+    {'d', (unsigned char) DIGITDODO_SEG7_B | DIGITDODO_SEG7_C | DIGITDODO_SEG7_D | DIGITDODO_SEG7_E | DIGITDODO_SEG7_G},
+    {'e', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_B | DIGITDODO_SEG7_D | DIGITDODO_SEG7_E | DIGITDODO_SEG7_F | DIGITDODO_SEG7_G},
+    {'f', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_E | DIGITDODO_SEG7_F | DIGITDODO_SEG7_G},
+    {'g', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_B | DIGITDODO_SEG7_C | DIGITDODO_SEG7_D | DIGITDODO_SEG7_F | DIGITDODO_SEG7_G},
+    {'h', (unsigned char) DIGITDODO_SEG7_C | DIGITDODO_SEG7_E | DIGITDODO_SEG7_F | DIGITDODO_SEG7_G},
+    {'i', (unsigned char) DIGITDODO_SEG7_E},
+    {'j', (unsigned char) DIGITDODO_SEG7_B | DIGITDODO_SEG7_C | DIGITDODO_SEG7_D},
+    {'k', (unsigned char) DIGITDODO_SEG7_E | DIGITDODO_SEG7_F | DIGITDODO_SEG7_G},
+    {'l', (unsigned char) DIGITDODO_SEG7_D | DIGITDODO_SEG7_E | DIGITDODO_SEG7_F},
+    {'m', (unsigned char) DIGITDODO_SEG7_C | DIGITDODO_SEG7_E | DIGITDODO_SEG7_G},
+    {'n', (unsigned char) DIGITDODO_SEG7_C | DIGITDODO_SEG7_E | DIGITDODO_SEG7_G},
+    {'o', (unsigned char) DIGITDODO_SEG7_C | DIGITDODO_SEG7_D | DIGITDODO_SEG7_E | DIGITDODO_SEG7_G},
+    {'p', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_B | DIGITDODO_SEG7_E | DIGITDODO_SEG7_F | DIGITDODO_SEG7_G},
+    {'q', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_B | DIGITDODO_SEG7_C | DIGITDODO_SEG7_F | DIGITDODO_SEG7_G},
+    {'r', (unsigned char) DIGITDODO_SEG7_E | DIGITDODO_SEG7_G},
+    {'s', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_C | DIGITDODO_SEG7_D | DIGITDODO_SEG7_F | DIGITDODO_SEG7_G},
+    {'t', (unsigned char) DIGITDODO_SEG7_D | DIGITDODO_SEG7_E | DIGITDODO_SEG7_F | DIGITDODO_SEG7_G},
+    {'u', (unsigned char) DIGITDODO_SEG7_C | DIGITDODO_SEG7_D | DIGITDODO_SEG7_E},
+    {'v', (unsigned char) DIGITDODO_SEG7_C | DIGITDODO_SEG7_D | DIGITDODO_SEG7_E},
+    {'w', (unsigned char) DIGITDODO_SEG7_C | DIGITDODO_SEG7_D | DIGITDODO_SEG7_E},
+    {'x', (unsigned char) DIGITDODO_SEG7_C | DIGITDODO_SEG7_E},
+    {'y', (unsigned char) DIGITDODO_SEG7_B | DIGITDODO_SEG7_F | DIGITDODO_SEG7_G},
+    {'z', (unsigned char) DIGITDODO_SEG7_A | DIGITDODO_SEG7_B | DIGITDODO_SEG7_D | DIGITDODO_SEG7_E | DIGITDODO_SEG7_G}
 };
-
-bool isCharValid(unsigned char t_char)
-{
-    bool valid = false;
-
-    auto it = sevenSegmentCharMap.find(t_char);
-    if (it != sevenSegmentCharMap.end())
-    {
-        valid = true;
-    }
-
-    if(valid)
-    {
-        if(sevenSegmentCharMap.at(t_char) == sevenSegmentCharMap.at('.'))
-        {
-            valid = false; // standalone dot is not valid
-        }
-    }    
-
-    return valid;
-}
-
-unsigned char getCharSegments(unsigned char t_char)
-{
-    if(!isCharValid(t_char))
-    {
-        return sevenSegmentCharMap.at(' ');
-    }
-    return sevenSegmentCharMap.at(t_char);
-}
-
 
 std::vector<unsigned char> SevenDigitDisplay::getRawBuffer(const std::string& t_value, int group_size)
 {
@@ -71,17 +97,17 @@ std::vector<unsigned char> SevenDigitDisplay::getRawBuffer(const std::string& t_
     for (size_t i = 0, digit_count = 0; i < t_value.size() && digit_count < group_size; ++i)
     {
         unsigned char c = t_value[i];
-        if (!isCharValid(c))
+        unsigned char seg = getCharSegments(c);
+
+        if (seg == getCharSegments('.'))
         {
             continue;
-        }            
-
-        unsigned char seg = getCharSegments(c);
+        }        
 
         // Check if next character is a dot
         if (i + 1 < t_value.size() && (getCharSegments(t_value[i + 1]) == getCharSegments('.')))
         {
-            seg |= 0x01;
+            seg |= getCharSegments('.');
         }
 
         raw_buffer.push_back(seg);
@@ -106,7 +132,7 @@ std::string SevenDigitDisplay::populate_scrolled_value(std::string& original_val
 
     int digit_count = 0;
     int i = 0;
-    bool leading_dot_skipped = false;
+    int non_displayable_char_count = 0;
 
     std::string scrolled;
     scrolled.reserve(group_size);
@@ -126,10 +152,12 @@ std::string SevenDigitDisplay::populate_scrolled_value(std::string& original_val
         }
 
         char c = padded_value[index];
+        unsigned char seg = getCharSegments(c);
 
-        if (digit_count == 0 && (getCharSegments(c) == getCharSegments('.')))
+        if ((digit_count == 0) && seg == getCharSegments('.'))
         {
-            leading_dot_skipped = true;
+            non_displayable_char_count += 1;
+            
             if (right_to_left)
             {
                 ++i;
@@ -143,7 +171,7 @@ std::string SevenDigitDisplay::populate_scrolled_value(std::string& original_val
         }
 
         scrolled += c;
-        if ((getCharSegments(c) != getCharSegments('.')))
+        if (seg != getCharSegments('.'))
         {
             ++digit_count;
         }
@@ -155,12 +183,34 @@ std::string SevenDigitDisplay::populate_scrolled_value(std::string& original_val
     // Advance scroll position
     if (right_to_left)
     {
-        scroll_pos = (scroll_pos + 1 + (leading_dot_skipped ? 1 : 0)) % padded_size;
+        scroll_pos = (scroll_pos + 1 + non_displayable_char_count) % padded_size;
     }
     else
     {
-        scroll_pos = (scroll_pos - 1 - (leading_dot_skipped ? 1 : 0) + padded_size) % padded_size;
+        scroll_pos = (scroll_pos - 1 - non_displayable_char_count + padded_size) % padded_size;
     }
 
     return scrolled;
+}
+
+bool SevenDigitDisplay::isCharValid(unsigned char t_char)
+{
+    bool valid = false;
+
+    auto it = sevenSegmentCharMap.find(t_char);
+    if (it != sevenSegmentCharMap.end())
+    {
+        valid = true;
+    }
+
+    return valid;
+}
+
+unsigned char SevenDigitDisplay::getCharSegments(unsigned char t_char)
+{
+    if(!isCharValid(t_char))
+    {
+        return sevenSegmentCharMap.at(' ');
+    }
+    return sevenSegmentCharMap.at(t_char);
 }

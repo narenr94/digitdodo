@@ -236,12 +236,12 @@ void drawDigit(unsigned char digit, sf::Vector2f position, float size)
 
     // Draw segments
     for (int i = 0; i < 7; ++i) {
-        segments[i].setFillColor((digit & (0x01 << (7 - i))) ? onColor : offColor);
+        segments[i].setFillColor((digit & (0x01 << (i))) ? onColor : offColor);
         m_window->draw(segments[i]);
     }
 
     // Draw dot if requested
-    dot.setFillColor((digit & 0x01) ? onColor : offColor);
+    dot.setFillColor((digit & 0x80) ? onColor : offColor);
     m_window->draw(dot);
 }
 

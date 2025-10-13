@@ -3,21 +3,21 @@
 
 #include <unordered_map>
 
-#define SEG14_A 0x01
-#define SEG14_B 0x02
-#define SEG14_C 0x04
-#define SEG14_D 0x08
-#define SEG14_E 0x10
-#define SEG14_F 0x20
-#define SEG14_G1 0x40
-#define SEG14_G2 0x80 
-#define SEG14_H 0x01
-#define SEG14_I 0x02
-#define SEG14_J 0x04
-#define SEG14_K 0x08
-#define SEG14_L 0x10
-#define SEG14_M 0x20
-#define SEG14_DP 0x40
+#define DIGITDODO_SEG14_A   0x01
+#define DIGITDODO_SEG14_B   0x02
+#define DIGITDODO_SEG14_C   0x04
+#define DIGITDODO_SEG14_D   0x08
+#define DIGITDODO_SEG14_E   0x10
+#define DIGITDODO_SEG14_F   0x20
+#define DIGITDODO_SEG14_G1  0x40
+#define DIGITDODO_SEG14_G2  0x80 
+#define DIGITDODO_SEG14_H   0x01
+#define DIGITDODO_SEG14_I   0x02
+#define DIGITDODO_SEG14_J   0x04
+#define DIGITDODO_SEG14_K   0x08
+#define DIGITDODO_SEG14_L   0x10
+#define DIGITDODO_SEG14_M   0x20
+#define DIGITDODO_SEG14_DP  0x40
 
    /*
 
@@ -42,117 +42,84 @@
 // Map entries use { lowByte, highByte } where highByte uses the H..DP masks directly.
 static const std::unordered_map<unsigned char, std::vector<unsigned char>> fourteenSegmentMap = {
     // digits
-    {'0', { (unsigned char)(SEG14_A | SEG14_B | SEG14_C | SEG14_D | SEG14_E | SEG14_F), (unsigned char)0x00 }}, // A B C D E F
-    {'1', { (unsigned char)(SEG14_B | SEG14_C), (unsigned char)0x00 }}, // B C
-    {'2', { (unsigned char)(SEG14_A | SEG14_B | SEG14_D | SEG14_E | SEG14_G1 | SEG14_G2), (unsigned char)0x00 }}, // A B D E G1 G2
-    {'3', { (unsigned char)(SEG14_A | SEG14_B | SEG14_C | SEG14_D | SEG14_G1 | SEG14_G2), (unsigned char)0x00 }}, // A B C D G1 G2
-    {'4', { (unsigned char)(SEG14_B | SEG14_C | SEG14_F | SEG14_G1 | SEG14_G2), (unsigned char)0x00 }}, // B C F G1 G2
-    {'5', { (unsigned char)(SEG14_A | SEG14_C | SEG14_D | SEG14_F | SEG14_G1 | SEG14_G2), (unsigned char)0x00 }}, // A C D F G1 G2
-    {'6', { (unsigned char)(SEG14_A | SEG14_C | SEG14_D | SEG14_E | SEG14_F | SEG14_G1 | SEG14_G2), (unsigned char)0x00 }}, // A C D E F G1 G2
-    {'7', { (unsigned char)(SEG14_A | SEG14_B | SEG14_C), (unsigned char)0x00 }}, // A B C
-    {'8', { (unsigned char)(SEG14_A | SEG14_B | SEG14_C | SEG14_D | SEG14_E | SEG14_F | SEG14_G1 | SEG14_G2), (unsigned char)0x00 }}, // all A..G2
-    {'9', { (unsigned char)(SEG14_A | SEG14_B | SEG14_C | SEG14_D | SEG14_F | SEG14_G1 | SEG14_G2), (unsigned char)0x00 }}, // A B C D F G1 G2
+    {'0', { (unsigned char)(DIGITDODO_SEG14_A | DIGITDODO_SEG14_B | DIGITDODO_SEG14_C | DIGITDODO_SEG14_D | DIGITDODO_SEG14_E | DIGITDODO_SEG14_F), (unsigned char)0x00 }}, // A B C D E F
+    {'1', { (unsigned char)(DIGITDODO_SEG14_B | DIGITDODO_SEG14_C), (unsigned char)0x00 }}, // B C
+    {'2', { (unsigned char)(DIGITDODO_SEG14_A | DIGITDODO_SEG14_B | DIGITDODO_SEG14_D | DIGITDODO_SEG14_E | DIGITDODO_SEG14_G1 | DIGITDODO_SEG14_G2), (unsigned char)0x00 }}, // A B D E G1 G2
+    {'3', { (unsigned char)(DIGITDODO_SEG14_A | DIGITDODO_SEG14_B | DIGITDODO_SEG14_C | DIGITDODO_SEG14_D | DIGITDODO_SEG14_G1 | DIGITDODO_SEG14_G2), (unsigned char)0x00 }}, // A B C D G1 G2
+    {'4', { (unsigned char)(DIGITDODO_SEG14_B | DIGITDODO_SEG14_C | DIGITDODO_SEG14_F | DIGITDODO_SEG14_G1 | DIGITDODO_SEG14_G2), (unsigned char)0x00 }}, // B C F G1 G2
+    {'5', { (unsigned char)(DIGITDODO_SEG14_A | DIGITDODO_SEG14_C | DIGITDODO_SEG14_D | DIGITDODO_SEG14_F | DIGITDODO_SEG14_G1 | DIGITDODO_SEG14_G2), (unsigned char)0x00 }}, // A C D F G1 G2
+    {'6', { (unsigned char)(DIGITDODO_SEG14_A | DIGITDODO_SEG14_C | DIGITDODO_SEG14_D | DIGITDODO_SEG14_E | DIGITDODO_SEG14_F | DIGITDODO_SEG14_G1 | DIGITDODO_SEG14_G2), (unsigned char)0x00 }}, // A C D E F G1 G2
+    {'7', { (unsigned char)(DIGITDODO_SEG14_A | DIGITDODO_SEG14_B | DIGITDODO_SEG14_C), (unsigned char)0x00 }}, // A B C
+    {'8', { (unsigned char)(DIGITDODO_SEG14_A | DIGITDODO_SEG14_B | DIGITDODO_SEG14_C | DIGITDODO_SEG14_D | DIGITDODO_SEG14_E | DIGITDODO_SEG14_F | DIGITDODO_SEG14_G1 | DIGITDODO_SEG14_G2), (unsigned char)0x00 }}, // all A..G2
+    {'9', { (unsigned char)(DIGITDODO_SEG14_A | DIGITDODO_SEG14_B | DIGITDODO_SEG14_C | DIGITDODO_SEG14_D | DIGITDODO_SEG14_F | DIGITDODO_SEG14_G1 | DIGITDODO_SEG14_G2), (unsigned char)0x00 }}, // A B C D F G1 G2
 
     // uppercase letters
-    {'A', { (unsigned char)(SEG14_A | SEG14_B | SEG14_C | SEG14_E | SEG14_F | SEG14_G1 | SEG14_G2), (unsigned char)0x00 }}, // A B C E F G1 G2
-    {'B', { (unsigned char)(SEG14_A | SEG14_B | SEG14_C | SEG14_D | SEG14_G2), (unsigned char)(SEG14_L | SEG14_M) }}, // like 0 + M
-    {'C', { (unsigned char)(SEG14_A | SEG14_D | SEG14_E | SEG14_F), (unsigned char)0x00 }}, // A D E F
-    {'D', { (unsigned char)(SEG14_A | SEG14_B | SEG14_C | SEG14_D), (unsigned char)(SEG14_L | SEG14_M) }}, // A B C D + M
-    {'E', { (unsigned char)(SEG14_A | SEG14_D | SEG14_E | SEG14_F | SEG14_G1), (unsigned char)0x00 }}, // A D E F G1
-    {'F', { (unsigned char)(SEG14_A | SEG14_E | SEG14_F | SEG14_G1), (unsigned char)0x00 }}, // A E F G1
-    {'G', { (unsigned char)(SEG14_A | SEG14_C | SEG14_D | SEG14_E | SEG14_F | SEG14_G2), (unsigned char)0x00 }}, // A C D E F G2
-    {'H', { (unsigned char)(SEG14_B | SEG14_C | SEG14_E | SEG14_F | SEG14_G1 | SEG14_G2), (unsigned char)0x00 }}, // B C E F G1 G2 + L+M
-    {'I', { (unsigned char)(SEG14_A | SEG14_D), (unsigned char)(SEG14_L | SEG14_M) }}, // B C + M
-    {'J', { (unsigned char)(SEG14_B | SEG14_C | SEG14_D | SEG14_E), (unsigned char)0x00 }}, // B C D E
-    {'K', { (unsigned char)(SEG14_E | SEG14_F | SEG14_G1), (unsigned char)(SEG14_I | SEG14_J) }}, // E F G1 G2 + L
-    {'L', { (unsigned char)(SEG14_D | SEG14_E | SEG14_F), (unsigned char)0x00 }}, // D E F
-    {'M', { (unsigned char)(SEG14_B | SEG14_C | SEG14_E | SEG14_F), (unsigned char)(SEG14_H | SEG14_I) }}, // B C E F + L+M
-    {'N', { (unsigned char)(SEG14_B | SEG14_C | SEG14_E | SEG14_F), (unsigned char)(SEG14_H | SEG14_J) }}, // B C E F + L
-    {'O', { (unsigned char)(SEG14_A | SEG14_B | SEG14_C | SEG14_D | SEG14_E | SEG14_F), (unsigned char)0x00 }}, // same as 0
-    {'P', { (unsigned char)(SEG14_A | SEG14_B | SEG14_E | SEG14_F | SEG14_G1 | SEG14_G2), (unsigned char)0x00 }}, // A B E F G1
-    {'Q', { (unsigned char)(SEG14_A | SEG14_B | SEG14_C | SEG14_D | SEG14_E | SEG14_F), (unsigned char)(SEG14_J) }}, // 0 + L (Q tail)
-    {'R', { (unsigned char)(SEG14_A | SEG14_B | SEG14_E | SEG14_F | SEG14_G1), (unsigned char)(SEG14_J) }}, // P + L
-    {'S', { (unsigned char)(SEG14_A | SEG14_C | SEG14_D | SEG14_F | SEG14_G1 | SEG14_G2), (unsigned char)0x00 }}, // like 5
-    {'T', { (unsigned char)(SEG14_A), (unsigned char)(SEG14_L | SEG14_M) }}, // A + M
-    {'U', { (unsigned char)(SEG14_B | SEG14_C | SEG14_D | SEG14_E | SEG14_F), (unsigned char)0x00 }}, // B C D E F
-    {'V', { (unsigned char)0x00, (unsigned char)(SEG14_H | SEG14_I) }}, // E F
-    {'W', { (unsigned char)(SEG14_B | SEG14_C | SEG14_E | SEG14_F), (unsigned char)(SEG14_J | SEG14_K) }}, // B C E F + M
-    {'X', { (unsigned char)0x00, (unsigned char)(SEG14_H | SEG14_I | SEG14_J | SEG14_K) }}, // L+M
-    {'Y', { (unsigned char)0x00, (unsigned char)(SEG14_H | SEG14_I | SEG14_M) }}, // M
-    {'Z', { (unsigned char)(SEG14_A | SEG14_D), (unsigned char)(SEG14_I | SEG14_K) }}, // rectangular Z
+    {'A', { (unsigned char)(DIGITDODO_SEG14_A | DIGITDODO_SEG14_B | DIGITDODO_SEG14_C | DIGITDODO_SEG14_E | DIGITDODO_SEG14_F | DIGITDODO_SEG14_G1 | DIGITDODO_SEG14_G2), (unsigned char)0x00 }}, // A B C E F G1 G2
+    {'B', { (unsigned char)(DIGITDODO_SEG14_A | DIGITDODO_SEG14_B | DIGITDODO_SEG14_C | DIGITDODO_SEG14_D | DIGITDODO_SEG14_G2), (unsigned char)(DIGITDODO_SEG14_L | DIGITDODO_SEG14_M) }}, // like 0 + M
+    {'C', { (unsigned char)(DIGITDODO_SEG14_A | DIGITDODO_SEG14_D | DIGITDODO_SEG14_E | DIGITDODO_SEG14_F), (unsigned char)0x00 }}, // A D E F
+    {'D', { (unsigned char)(DIGITDODO_SEG14_A | DIGITDODO_SEG14_B | DIGITDODO_SEG14_C | DIGITDODO_SEG14_D), (unsigned char)(DIGITDODO_SEG14_L | DIGITDODO_SEG14_M) }}, // A B C D + M
+    {'E', { (unsigned char)(DIGITDODO_SEG14_A | DIGITDODO_SEG14_D | DIGITDODO_SEG14_E | DIGITDODO_SEG14_F | DIGITDODO_SEG14_G1), (unsigned char)0x00 }}, // A D E F G1
+    {'F', { (unsigned char)(DIGITDODO_SEG14_A | DIGITDODO_SEG14_E | DIGITDODO_SEG14_F | DIGITDODO_SEG14_G1), (unsigned char)0x00 }}, // A E F G1
+    {'G', { (unsigned char)(DIGITDODO_SEG14_A | DIGITDODO_SEG14_C | DIGITDODO_SEG14_D | DIGITDODO_SEG14_E | DIGITDODO_SEG14_F | DIGITDODO_SEG14_G2), (unsigned char)0x00 }}, // A C D E F G2
+    {'H', { (unsigned char)(DIGITDODO_SEG14_B | DIGITDODO_SEG14_C | DIGITDODO_SEG14_E | DIGITDODO_SEG14_F | DIGITDODO_SEG14_G1 | DIGITDODO_SEG14_G2), (unsigned char)0x00 }}, // B C E F G1 G2 + L+M
+    {'I', { (unsigned char)(DIGITDODO_SEG14_A | DIGITDODO_SEG14_D), (unsigned char)(DIGITDODO_SEG14_L | DIGITDODO_SEG14_M) }}, // B C + M
+    {'J', { (unsigned char)(DIGITDODO_SEG14_B | DIGITDODO_SEG14_C | DIGITDODO_SEG14_D | DIGITDODO_SEG14_E), (unsigned char)0x00 }}, // B C D E
+    {'K', { (unsigned char)(DIGITDODO_SEG14_E | DIGITDODO_SEG14_F | DIGITDODO_SEG14_G1), (unsigned char)(DIGITDODO_SEG14_I | DIGITDODO_SEG14_J) }}, // E F G1 G2 + L
+    {'L', { (unsigned char)(DIGITDODO_SEG14_D | DIGITDODO_SEG14_E | DIGITDODO_SEG14_F), (unsigned char)0x00 }}, // D E F
+    {'M', { (unsigned char)(DIGITDODO_SEG14_B | DIGITDODO_SEG14_C | DIGITDODO_SEG14_E | DIGITDODO_SEG14_F), (unsigned char)(DIGITDODO_SEG14_H | DIGITDODO_SEG14_I) }}, // B C E F + L+M
+    {'N', { (unsigned char)(DIGITDODO_SEG14_B | DIGITDODO_SEG14_C | DIGITDODO_SEG14_E | DIGITDODO_SEG14_F), (unsigned char)(DIGITDODO_SEG14_H | DIGITDODO_SEG14_J) }}, // B C E F + L
+    {'O', { (unsigned char)(DIGITDODO_SEG14_A | DIGITDODO_SEG14_B | DIGITDODO_SEG14_C | DIGITDODO_SEG14_D | DIGITDODO_SEG14_E | DIGITDODO_SEG14_F), (unsigned char)0x00 }}, // same as 0
+    {'P', { (unsigned char)(DIGITDODO_SEG14_A | DIGITDODO_SEG14_B | DIGITDODO_SEG14_E | DIGITDODO_SEG14_F | DIGITDODO_SEG14_G1 | DIGITDODO_SEG14_G2), (unsigned char)0x00 }}, // A B E F G1
+    {'Q', { (unsigned char)(DIGITDODO_SEG14_A | DIGITDODO_SEG14_B | DIGITDODO_SEG14_C | DIGITDODO_SEG14_D | DIGITDODO_SEG14_E | DIGITDODO_SEG14_F), (unsigned char)(DIGITDODO_SEG14_J) }}, // 0 + L (Q tail)
+    {'R', { (unsigned char)(DIGITDODO_SEG14_A | DIGITDODO_SEG14_B | DIGITDODO_SEG14_E | DIGITDODO_SEG14_F | DIGITDODO_SEG14_G1), (unsigned char)(DIGITDODO_SEG14_J) }}, // P + L
+    {'S', { (unsigned char)(DIGITDODO_SEG14_A | DIGITDODO_SEG14_C | DIGITDODO_SEG14_D | DIGITDODO_SEG14_F | DIGITDODO_SEG14_G1 | DIGITDODO_SEG14_G2), (unsigned char)0x00 }}, // like 5
+    {'T', { (unsigned char)(DIGITDODO_SEG14_A), (unsigned char)(DIGITDODO_SEG14_L | DIGITDODO_SEG14_M) }}, // A + M
+    {'U', { (unsigned char)(DIGITDODO_SEG14_B | DIGITDODO_SEG14_C | DIGITDODO_SEG14_D | DIGITDODO_SEG14_E | DIGITDODO_SEG14_F), (unsigned char)0x00 }}, // B C D E F
+    {'V', { (unsigned char)0x00, (unsigned char)(DIGITDODO_SEG14_H | DIGITDODO_SEG14_I) }}, // E F
+    {'W', { (unsigned char)(DIGITDODO_SEG14_B | DIGITDODO_SEG14_C | DIGITDODO_SEG14_E | DIGITDODO_SEG14_F), (unsigned char)(DIGITDODO_SEG14_J | DIGITDODO_SEG14_K) }}, // B C E F + M
+    {'X', { (unsigned char)0x00, (unsigned char)(DIGITDODO_SEG14_H | DIGITDODO_SEG14_I | DIGITDODO_SEG14_J | DIGITDODO_SEG14_K) }}, // L+M
+    {'Y', { (unsigned char)0x00, (unsigned char)(DIGITDODO_SEG14_H | DIGITDODO_SEG14_I | DIGITDODO_SEG14_M) }}, // M
+    {'Z', { (unsigned char)(DIGITDODO_SEG14_A | DIGITDODO_SEG14_D), (unsigned char)(DIGITDODO_SEG14_I | DIGITDODO_SEG14_K) }}, // rectangular Z
 
     // lowercase (mapped to uppercase shapes)
-    {'a', { (unsigned char)(SEG14_D | SEG14_E | SEG14_G1), (unsigned char)(SEG14_M) }},
-    {'b', { (unsigned char)(SEG14_C | SEG14_D | SEG14_E | SEG14_F | SEG14_G1 | SEG14_G2), (unsigned char)0x00 }},
-    {'c', { (unsigned char)(SEG14_D | SEG14_E | SEG14_G1 | SEG14_G2), (unsigned char)0x00 }},
-    {'d', { (unsigned char)(SEG14_B | SEG14_C | SEG14_D | SEG14_E | SEG14_G1 | SEG14_G2), (unsigned char)0x00 }},
-    {'e', { (unsigned char)(SEG14_A | SEG14_B | SEG14_D | SEG14_E | SEG14_F | SEG14_G1 | SEG14_G2), (unsigned char)0x00 }},
-    {'f', { (unsigned char)(SEG14_A | SEG14_E | SEG14_F | SEG14_G1), (unsigned char)0x00 }},
-    {'g', { (unsigned char)(SEG14_A | SEG14_B | SEG14_C | SEG14_D | SEG14_F | SEG14_G1 | SEG14_G2), (unsigned char)0x00 }},
-    {'h', { (unsigned char)(SEG14_C | SEG14_E | SEG14_F | SEG14_G1 | SEG14_G2), (unsigned char)0x00 }},
-    {'i', { (unsigned char)0x00, (unsigned char)(SEG14_M) }},
-    {'j', { (unsigned char)(SEG14_B | SEG14_C | SEG14_D | SEG14_E), (unsigned char)0x00 }},
-    {'k', { (unsigned char)(SEG14_E | SEG14_F | SEG14_G1), (unsigned char)(SEG14_I | SEG14_J) }},
-    {'l', { (unsigned char)0x00, (unsigned char)(SEG14_L | SEG14_M) }},
-    {'m', { (unsigned char)(SEG14_B | SEG14_C | SEG14_E | SEG14_F), (unsigned char)(SEG14_H | SEG14_I) }},
-    {'n', { (unsigned char)(SEG14_C | SEG14_E | SEG14_G1 | SEG14_G2), (unsigned char)0x00 }},
-    {'o', { (unsigned char)(SEG14_C | SEG14_D | SEG14_E | SEG14_G1 | SEG14_G2), (unsigned char)0x00 }},
-    {'p', { (unsigned char)(SEG14_A | SEG14_B | SEG14_E | SEG14_F | SEG14_G1 | SEG14_G2), (unsigned char)0x00 }},
-    {'q', { (unsigned char)(SEG14_A | SEG14_B | SEG14_C | SEG14_F | SEG14_G1 | SEG14_G2), (unsigned char)0x00 }},
-    {'r', { (unsigned char)(SEG14_E | SEG14_G1), (unsigned char)0x00 }},
-    {'s', { (unsigned char)(SEG14_A | SEG14_C | SEG14_D | SEG14_F | SEG14_G1 | SEG14_G2), (unsigned char)0x00 }},
-    {'t', { (unsigned char)(SEG14_D | SEG14_E | SEG14_F | SEG14_G1), (unsigned char)0x00 }},
-    {'u', { (unsigned char)(SEG14_C | SEG14_D | SEG14_E), (unsigned char)0x00 }},
-    {'v', { (unsigned char)0x00, (unsigned char)(SEG14_H | SEG14_I) }},
-    {'w', { (unsigned char)(SEG14_C | SEG14_E), (unsigned char)(SEG14_J | SEG14_K) }},
-    {'x', { (unsigned char)0x00, (unsigned char)(SEG14_H | SEG14_I | SEG14_J | SEG14_K) }},
-    {'y', { (unsigned char)0x00, (unsigned char)(SEG14_H | SEG14_I | SEG14_M) }},
-    {'z', { (unsigned char)(SEG14_G1 | SEG14_D), (unsigned char)(SEG14_K) }},
+    {'a', { (unsigned char)(DIGITDODO_SEG14_D | DIGITDODO_SEG14_E | DIGITDODO_SEG14_G1), (unsigned char)(DIGITDODO_SEG14_M) }},
+    {'b', { (unsigned char)(DIGITDODO_SEG14_C | DIGITDODO_SEG14_D | DIGITDODO_SEG14_E | DIGITDODO_SEG14_F | DIGITDODO_SEG14_G1 | DIGITDODO_SEG14_G2), (unsigned char)0x00 }},
+    {'c', { (unsigned char)(DIGITDODO_SEG14_D | DIGITDODO_SEG14_E | DIGITDODO_SEG14_G1 | DIGITDODO_SEG14_G2), (unsigned char)0x00 }},
+    {'d', { (unsigned char)(DIGITDODO_SEG14_B | DIGITDODO_SEG14_C | DIGITDODO_SEG14_D | DIGITDODO_SEG14_E | DIGITDODO_SEG14_G1 | DIGITDODO_SEG14_G2), (unsigned char)0x00 }},
+    {'e', { (unsigned char)(DIGITDODO_SEG14_A | DIGITDODO_SEG14_B | DIGITDODO_SEG14_D | DIGITDODO_SEG14_E | DIGITDODO_SEG14_F | DIGITDODO_SEG14_G1 | DIGITDODO_SEG14_G2), (unsigned char)0x00 }},
+    {'f', { (unsigned char)(DIGITDODO_SEG14_A | DIGITDODO_SEG14_E | DIGITDODO_SEG14_F | DIGITDODO_SEG14_G1), (unsigned char)0x00 }},
+    {'g', { (unsigned char)(DIGITDODO_SEG14_A | DIGITDODO_SEG14_B | DIGITDODO_SEG14_C | DIGITDODO_SEG14_D | DIGITDODO_SEG14_F | DIGITDODO_SEG14_G1 | DIGITDODO_SEG14_G2), (unsigned char)0x00 }},
+    {'h', { (unsigned char)(DIGITDODO_SEG14_C | DIGITDODO_SEG14_E | DIGITDODO_SEG14_F | DIGITDODO_SEG14_G1 | DIGITDODO_SEG14_G2), (unsigned char)0x00 }},
+    {'i', { (unsigned char)0x00, (unsigned char)(DIGITDODO_SEG14_M) }},
+    {'j', { (unsigned char)(DIGITDODO_SEG14_B | DIGITDODO_SEG14_C | DIGITDODO_SEG14_D | DIGITDODO_SEG14_E), (unsigned char)0x00 }},
+    {'k', { (unsigned char)(DIGITDODO_SEG14_E | DIGITDODO_SEG14_F | DIGITDODO_SEG14_G1), (unsigned char)(DIGITDODO_SEG14_I | DIGITDODO_SEG14_J) }},
+    {'l', { (unsigned char)0x00, (unsigned char)(DIGITDODO_SEG14_L | DIGITDODO_SEG14_M) }},
+    {'m', { (unsigned char)(DIGITDODO_SEG14_B | DIGITDODO_SEG14_C | DIGITDODO_SEG14_E | DIGITDODO_SEG14_F), (unsigned char)(DIGITDODO_SEG14_H | DIGITDODO_SEG14_I) }},
+    {'n', { (unsigned char)(DIGITDODO_SEG14_C | DIGITDODO_SEG14_E | DIGITDODO_SEG14_G1 | DIGITDODO_SEG14_G2), (unsigned char)0x00 }},
+    {'o', { (unsigned char)(DIGITDODO_SEG14_C | DIGITDODO_SEG14_D | DIGITDODO_SEG14_E | DIGITDODO_SEG14_G1 | DIGITDODO_SEG14_G2), (unsigned char)0x00 }},
+    {'p', { (unsigned char)(DIGITDODO_SEG14_A | DIGITDODO_SEG14_B | DIGITDODO_SEG14_E | DIGITDODO_SEG14_F | DIGITDODO_SEG14_G1 | DIGITDODO_SEG14_G2), (unsigned char)0x00 }},
+    {'q', { (unsigned char)(DIGITDODO_SEG14_A | DIGITDODO_SEG14_B | DIGITDODO_SEG14_C | DIGITDODO_SEG14_F | DIGITDODO_SEG14_G1 | DIGITDODO_SEG14_G2), (unsigned char)0x00 }},
+    {'r', { (unsigned char)(DIGITDODO_SEG14_E | DIGITDODO_SEG14_G1), (unsigned char)0x00 }},
+    {'s', { (unsigned char)(DIGITDODO_SEG14_A | DIGITDODO_SEG14_C | DIGITDODO_SEG14_D | DIGITDODO_SEG14_F | DIGITDODO_SEG14_G1 | DIGITDODO_SEG14_G2), (unsigned char)0x00 }},
+    {'t', { (unsigned char)(DIGITDODO_SEG14_D | DIGITDODO_SEG14_E | DIGITDODO_SEG14_F | DIGITDODO_SEG14_G1), (unsigned char)0x00 }},
+    {'u', { (unsigned char)(DIGITDODO_SEG14_C | DIGITDODO_SEG14_D | DIGITDODO_SEG14_E), (unsigned char)0x00 }},
+    {'v', { (unsigned char)0x00, (unsigned char)(DIGITDODO_SEG14_H | DIGITDODO_SEG14_I) }},
+    {'w', { (unsigned char)(DIGITDODO_SEG14_C | DIGITDODO_SEG14_E), (unsigned char)(DIGITDODO_SEG14_J | DIGITDODO_SEG14_K) }},
+    {'x', { (unsigned char)0x00, (unsigned char)(DIGITDODO_SEG14_H | DIGITDODO_SEG14_I | DIGITDODO_SEG14_J | DIGITDODO_SEG14_K) }},
+    {'y', { (unsigned char)0x00, (unsigned char)(DIGITDODO_SEG14_H | DIGITDODO_SEG14_I | DIGITDODO_SEG14_M) }},
+    {'z', { (unsigned char)(DIGITDODO_SEG14_G1 | DIGITDODO_SEG14_D), (unsigned char)(DIGITDODO_SEG14_K) }},
 
     // symbols
-    {'-', { (unsigned char)(SEG14_G1 | SEG14_G2), (unsigned char)0x00 }}, // G1 only
-    {'_', { (unsigned char)(SEG14_D), (unsigned char)0x00 }}, // D only
-    {'=', { (unsigned char)(SEG14_D | SEG14_G1 | SEG14_G2), (unsigned char)0x00 }}, // D + G1
-    {'*', { (unsigned char)(SEG14_G1 | SEG14_G2), (unsigned char)(SEG14_H | SEG14_I | SEG14_J | SEG14_K | SEG14_L | SEG14_M) }},
-    {'/', { (unsigned char)0x00, (unsigned char)(SEG14_I | SEG14_K) }},
-    {'\\',{ (unsigned char)0x00, (unsigned char)(SEG14_H | SEG14_J) }},
-    {'.', { (unsigned char)0x00, (unsigned char)(SEG14_DP) }}, // DP
+    {'-', { (unsigned char)(DIGITDODO_SEG14_G1 | DIGITDODO_SEG14_G2), (unsigned char)0x00 }}, // G1 only
+    {'_', { (unsigned char)(DIGITDODO_SEG14_D), (unsigned char)0x00 }}, // D only
+    {'=', { (unsigned char)(DIGITDODO_SEG14_D | DIGITDODO_SEG14_G1 | DIGITDODO_SEG14_G2), (unsigned char)0x00 }}, // D + G1
+    {'*', { (unsigned char)(DIGITDODO_SEG14_G1 | DIGITDODO_SEG14_G2), (unsigned char)(DIGITDODO_SEG14_H | DIGITDODO_SEG14_I | DIGITDODO_SEG14_J | DIGITDODO_SEG14_K | DIGITDODO_SEG14_L | DIGITDODO_SEG14_M) }},
+    {'/', { (unsigned char)0x00, (unsigned char)(DIGITDODO_SEG14_I | DIGITDODO_SEG14_K) }},
+    {'\\',{ (unsigned char)0x00, (unsigned char)(DIGITDODO_SEG14_H | DIGITDODO_SEG14_J) }},
+    {'.', { (unsigned char)0x00, (unsigned char)(DIGITDODO_SEG14_DP) }}, // DP
     {' ', { (unsigned char)0x00, (unsigned char)0x00 }},
-    {'+', { (unsigned char)(SEG14_G1 | SEG14_G2), (unsigned char)(SEG14_L | SEG14_M) }}
+    {'+', { (unsigned char)(DIGITDODO_SEG14_G1 | DIGITDODO_SEG14_G2), (unsigned char)(DIGITDODO_SEG14_L | DIGITDODO_SEG14_M) }}
 };
-
-
-
-bool is14CharValid(unsigned char t_char)
-{
-    bool valid = false;
-
-    auto it = fourteenSegmentMap.find(t_char);
-    if (it != fourteenSegmentMap.end())
-    {
-        valid = true;
-    }
-
-    if(valid)
-    {
-        if(fourteenSegmentMap.at(t_char) == fourteenSegmentMap.at('.'))
-        {
-            valid = false; // standalone dot is not valid
-        }
-    }
-
-    return valid;
-}
-
-std::vector<unsigned char> get14CharSegments(unsigned char t_char)
-{
-    if(!is14CharValid(t_char))
-    {
-        return fourteenSegmentMap.at(' ');
-    }
-    return fourteenSegmentMap.at(t_char);
-}
-
 
 std::vector<unsigned char> FourteenDigitDisplay::getRawBuffer(const std::string& t_value, int group_size)
 {
@@ -162,15 +129,18 @@ std::vector<unsigned char> FourteenDigitDisplay::getRawBuffer(const std::string&
     for (size_t i = 0, digit_count = 0; i < t_value.size() && digit_count < group_size; ++i)
     {
         unsigned char c = t_value[i];
-        if (!is14CharValid(c))
+
+        std::vector<unsigned char> seg = getCharSegments(c);
+
+        if (seg == getCharSegments('.'))
         {
             continue;
-        }            
+        }             
 
-       std::vector<unsigned char> seg = get14CharSegments(c);
+       
 
         // Check if next character is a dot
-        if (i + 1 < t_value.size() && (get14CharSegments(t_value[i + 1]) == get14CharSegments('.')))
+        if (i + 1 < t_value.size() && (getCharSegments(t_value[i + 1]) == getCharSegments('.')))
         {
             seg[1] |= 0x40;
         }
@@ -198,7 +168,7 @@ std::string FourteenDigitDisplay::populate_scrolled_value(std::string& original_
 
     int digit_count = 0;
     int i = 0;
-    bool leading_dot_skipped = false;
+    int non_displayable_char_count = 0;
 
     std::string scrolled;
     scrolled.reserve(group_size);
@@ -218,10 +188,12 @@ std::string FourteenDigitDisplay::populate_scrolled_value(std::string& original_
         }
 
         char c = padded_value[index];
+        std::vector<unsigned char> seg = getCharSegments(c);
 
-        if (digit_count == 0 && (get14CharSegments(c) == get14CharSegments('.')))
+        if ((digit_count == 0) && seg == getCharSegments('.'))
         {
-            leading_dot_skipped = true;
+            non_displayable_char_count += 1;
+            
             if (right_to_left)
             {
                 ++i;
@@ -235,7 +207,7 @@ std::string FourteenDigitDisplay::populate_scrolled_value(std::string& original_
         }
 
         scrolled += c;
-        if ((get14CharSegments(c) != get14CharSegments('.')))
+        if ((seg != getCharSegments('.')))
         {
             ++digit_count;
         }
@@ -247,12 +219,34 @@ std::string FourteenDigitDisplay::populate_scrolled_value(std::string& original_
     // Advance scroll position
     if (right_to_left)
     {
-        scroll_pos = (scroll_pos + 1 + (leading_dot_skipped ? 1 : 0)) % padded_size;
+        scroll_pos = (scroll_pos + 1 + non_displayable_char_count) % padded_size;
     }
     else
     {
-        scroll_pos = (scroll_pos - 1 - (leading_dot_skipped ? 1 : 0) + padded_size) % padded_size;
+        scroll_pos = (scroll_pos - 1 - non_displayable_char_count + padded_size) % padded_size;
     }
 
     return scrolled;
+}
+
+bool FourteenDigitDisplay::isCharValid(unsigned char t_char)
+{
+    bool valid = false;
+
+    auto it = fourteenSegmentMap.find(t_char);
+    if (it != fourteenSegmentMap.end())
+    {
+        valid = true;
+    }
+
+    return valid;
+}
+
+std::vector<unsigned char> FourteenDigitDisplay::getCharSegments(unsigned char t_char)
+{
+    if(!isCharValid(t_char))
+    {
+        return fourteenSegmentMap.at(' ');
+    }
+    return fourteenSegmentMap.at(t_char);
 }

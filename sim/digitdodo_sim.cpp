@@ -11,7 +11,7 @@ std::vector<std::string> volt = { "12.34567", "11.11", "12.21", "20.31", "204.1"
 std::vector<std::string> curr = { "01.22", "11.22", "21.32", "01.42", "11.42" };
 
 std::string scroll_val =
-    "012.3-456=7 89.-_:,=+?!*%#@;ABCDEFGHIJKLMNOPQR.STUVWXYZabcdefghijklmnopqrstuvwxyz()<>[]{}$&^`~|";
+    "012.3-456=7 89-_:,=+?!*%#@;ABCDEFGHIJKLMNOPQR.STUVWXYZabcdefghijklmnopqrstuvwxyz()<>[]{}$&^`~|";
 
 int i = 0;
 

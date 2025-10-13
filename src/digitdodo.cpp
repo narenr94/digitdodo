@@ -72,7 +72,15 @@ bool digitdodo::update_display_value(const std::string& t_group_name, const std:
     if (group_index == -1)
         return false;
 
-    m_display_values[t_group_name] = t_value;
+    m_display_values[t_group_name] = "";
+
+    for (char c : t_value)
+    {
+        if (m_display_types[t_group_name]->isCharValid(c))
+        {
+            m_display_values[t_group_name] += c;
+        }
+    }
 
     if(t_update_raw)
     {

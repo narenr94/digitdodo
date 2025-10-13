@@ -10,4 +10,8 @@ class FourteenDigitDisplay : public BaseDigitDisplay
 
     std::string populate_scrolled_value(std::string& original_value, const int group_size, const digitdodo::ScrollDirection t_direction, int& scroll_pos) override;
 
+    bool isCharValid(unsigned char t_char) override;
+
+    std::vector<unsigned char> getCharSegments(unsigned char t_char);
+
 };
