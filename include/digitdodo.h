@@ -129,6 +129,10 @@ class digitdodo{
      */
     std::string populate_scrolled_value(std::string& group_name);
 
+    void pad_display_value(unsigned int t_group_index);
+
+    void unpad_display_value(unsigned int t_group_index);
+
     public:
 
     /**

@@ -90,6 +90,26 @@ bool digitdodo::update_display_value(const std::string& t_group_name, const std:
     return true;
 }
 
+void digitdodo::pad_display_value(unsigned int t_group_index)
+{
+    const std::string& group_name = m_groups[t_group_index].name;
+    const int group_size = m_groups[t_group_index].length;
+
+    std::string& original_value = m_display_values[group_name];
+
+    original_value += std::string(group_size, ' ');
+}
+
+void digitdodo::unpad_display_value(unsigned int t_group_index)
+{
+    const std::string& group_name = m_groups[t_group_index].name;
+    const int group_size = m_groups[t_group_index].length;
+
+    std::string& original_value = m_display_values[group_name];
+
+    original_value = original_value.substr(0, original_value.size() - group_size);
+}
+
 bool digitdodo::set_display_mode(const std::string& t_group_name, SevenSegmentDisplayMode t_mode, unsigned int t_param)
 {
     log_digitdodo("Setting display mode for group %s to %d with param %u\n", t_group_name.c_str(), static_cast<int>(t_mode), t_param);
@@ -108,6 +128,11 @@ bool digitdodo::set_display_mode(const std::string& t_group_name, SevenSegmentDi
         return false;
 
     cancel_group_handle(t_group_name);
+
+    if(m_display_mode[group_index] == SevenSegmentDisplayMode::Scroll)
+    {
+        unpad_display_value(group_index);
+    }
 
     update_display_mode(t_group_name, t_mode, t_param);
 
@@ -216,6 +241,13 @@ bool digitdodo::set_scroll_mode(const std::string& t_group_name, unsigned int t_
     log_digitdodo("Setting scroll mode for group %s with scroll speed %u ms\n", t_group_name.c_str(), t_speed_ms);
     
     m_group_scroll_position[t_group_name] = 0; // Reset scroll position
+
+    int group_index = get_group_index(t_group_name);
+
+    if (group_index == -1)
+        return false;
+
+    pad_display_value(group_index);
 
     TickToucan& tt = TickToucan::instance();
 

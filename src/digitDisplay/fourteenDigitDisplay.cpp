@@ -165,9 +165,9 @@ std::vector<unsigned char> FourteenDigitDisplay::getRawBuffer(const std::string&
 
 std::string FourteenDigitDisplay::populate_scrolled_value(std::string& original_value, const int group_size, const digitdodo::ScrollDirection t_direction, int& scroll_pos)
 {
-    const int padded_size = original_value.size() + group_size;    
+    const int padded_size = original_value.size();    
 
-    std::string padded_value = original_value + std::string(group_size, ' ');
+    std::string padded_value = original_value;
 
     bool right_to_left = (t_direction == digitdodo::ScrollDirection::RightToLeft);
 
