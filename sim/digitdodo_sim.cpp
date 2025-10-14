@@ -62,7 +62,10 @@ void toggle_scroll_direction(void* ctx)
 
 int main() {
     
-    
+    std::string seg14name = "14seg";
+    std::string voltName = "volt";
+
+    std::string adname = "ad";
 
     digitdodo& dodo = digitdodo::getInstance();
 
@@ -75,21 +78,21 @@ int main() {
 
     // dodo.set_display_mode("curr", SevenSegmentDisplayMode::Blink, 500);
 
-    dodo.update_display_value("ad", scroll_val);
+    dodo.update_display_value(adname, scroll_val);
 
-    dodo.set_scroll_direction("ad", digitdodo::ScrollDirection::RightToLeft); 
+    dodo.set_scroll_direction(adname, digitdodo::ScrollDirection::RightToLeft); 
 
-    dodo.set_display_mode("ad", SevenSegmentDisplayMode::Scroll, 500);
+    dodo.set_display_mode(adname, SevenSegmentDisplayMode::Scroll, 500);
 
-    dodo.update_display_value("14seg", scroll_val);
+    dodo.update_display_value(seg14name, scroll_val);
 
-    dodo.set_scroll_direction("14seg", digitdodo::ScrollDirection::RightToLeft); 
+    dodo.set_scroll_direction(seg14name, digitdodo::ScrollDirection::RightToLeft); 
 
-    // dodo.set_display_mode("14seg", SevenSegmentDisplayMode::Blink, 500);
+    // dodo.set_display_mode(seg14name, SevenSegmentDisplayMode::Blink, 500);
 
-    tt.scheduleEvery(15000, &update_mode, (void*)dodo.get_display_values().find("14seg")->first.c_str());
+    tt.scheduleEvery(15000, &update_mode, (void*)seg14name.c_str());
 
-    tt.scheduleEvery(1500, &update_trampolines, (void*)dodo.get_display_values().find("volt")->first.c_str(), 5000);
+    tt.scheduleEvery(1500, &update_trampolines, (void*)voltName.c_str(), 5000);
 
     while (windowIsOpen()) {
 

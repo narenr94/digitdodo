@@ -13,21 +13,16 @@ digitdodo& digitdodo::getInstance()
 
 digitdodo::digitdodo(): m_groups(digitdodo_platform::getGroups())
 {
-    m_display_mode.resize(m_groups.size(), SevenSegmentDisplayMode::Normal);
-
     for (const auto& group : m_groups) {
-        m_group_handles[group.name] = {-1};
-        m_display_values[group.name] = std::string(group.length , ' ');
-        m_group_visibility[group.name] = true;
-        m_group_scroll_direction[group.name] = digitdodo::ScrollDirection::RightToLeft; // true = right to left
-        m_group_scroll_position[group.name] = 0;
+        m_group_params[group.name] = {{-1}, std::string(group.length , ' '), true, 0, SevenSegmentDisplayMode::Normal, nullptr};
+
         switch (group.type)
         {
             case digitdodo_platform::SegmentDisplayType::SEG_7:
-                m_display_types[group.name] = new SevenDigitDisplay();
+                m_group_params[group.name].display_type = new SevenDigitDisplay();
                 break;
             case digitdodo_platform::SegmentDisplayType::SEG_14:
-                m_display_types[group.name] = new FourteenDigitDisplay();
+                m_group_params[group.name].display_type = new FourteenDigitDisplay();
                 break;
             
             default:
@@ -52,7 +47,7 @@ int digitdodo::get_group_index(const std::string& t_group_name)
 
 bool digitdodo::update_segment_output(const std::string& t_group_name, const std::string& t_value)
 {    
-    std::vector<unsigned char> raw_buffer = m_display_types[t_group_name]->getRawBuffer(t_value, m_groups[get_group_index(t_group_name)].length);
+    std::vector<unsigned char> raw_buffer = m_group_params[t_group_name].display_type->getRawBuffer(t_value, m_groups[get_group_index(t_group_name)].length);
 
     digitdodo_platform::updateRawBuffer(t_group_name, raw_buffer);
 
@@ -68,17 +63,16 @@ bool digitdodo::update_display_value(const std::string& t_group_name, const std:
     if (group_index == -1)
         return false;
 
-    m_display_values[t_group_name] = "";
+    m_group_params[t_group_name].display_value = "";
+
 
     for (char c : t_value)
     {
-        if (m_display_types[t_group_name]->isCharValid(c))
+        if(m_group_params[t_group_name].display_type->isCharValid(c))
         {
-            m_display_values[t_group_name] += c;
+            m_group_params[t_group_name].display_value += c;
         }
     }
-
-    log_digitdodo("Updated display value for group %s to %s\n", t_group_name.c_str(), m_display_values[t_group_name].c_str());
 
     if(t_update_raw)
     {
@@ -93,7 +87,7 @@ void digitdodo::pad_display_value(unsigned int t_group_index)
     const std::string& group_name = m_groups[t_group_index].name;
     const int group_size = m_groups[t_group_index].length;
 
-    std::string& original_value = m_display_values[group_name];
+    std::string& original_value = m_group_params[group_name].display_value;
 
     original_value += std::string(group_size, ' ');
 }
@@ -103,7 +97,7 @@ void digitdodo::unpad_display_value(unsigned int t_group_index)
     const std::string& group_name = m_groups[t_group_index].name;
     const int group_size = m_groups[t_group_index].length;
 
-    std::string& original_value = m_display_values[group_name];
+    std::string& original_value = m_group_params[group_name].display_value;
 
     original_value = original_value.substr(0, original_value.size() - group_size);
 }
@@ -127,14 +121,14 @@ bool digitdodo::set_display_mode(const std::string& t_group_name, SevenSegmentDi
 
     cancel_group_handle(t_group_name);
 
-    if(m_display_mode[group_index] == SevenSegmentDisplayMode::Scroll)
+    if(m_group_params[t_group_name].mode == SevenSegmentDisplayMode::Scroll)
     {
         unpad_display_value(group_index);
     }
 
     update_display_mode(t_group_name, t_mode, t_param);
 
-    m_display_mode[group_index] = t_mode;
+    m_group_params[t_group_name].mode = t_mode;
     return true;
 }
 
@@ -142,12 +136,11 @@ void digitdodo::cancel_group_handle(const std::string& t_group_name)
 {
     log_digitdodo("Cancelling group handle for group %s\n", t_group_name.c_str());
 
-    auto it = m_group_handles.find(t_group_name);
-    if (it != m_group_handles.end() && it->second.idx != -1)
+    if (m_group_params[t_group_name].handle.idx != -1)
     {
         TickToucan& tt = TickToucan::instance();
-        tt.cancel(it->second);
-        it->second = {-1};
+        tt.cancel(m_group_params[t_group_name].handle);
+        m_group_params[t_group_name].handle = {-1};
     }
 }
 
@@ -178,24 +171,21 @@ bool digitdodo::set_blink_mode(const std::string& t_group_name, unsigned int t_t
 {
     log_digitdodo("Setting blink mode for group %s with toggle %u ms\n", t_group_name.c_str(), t_toggle_ms);
     
+    m_group_params[t_group_name].visible = true; // Ensure visible state starts as true
+
     TickToucan& tt = TickToucan::instance();
 
     // Use the key from m_display_values to get a stable pointer
-    const char* ctx = m_display_values.find(t_group_name)->first.c_str();
+    const char* ctx = m_group_params.find(t_group_name)->first.c_str();
 
     TickToucan::Handle h = tt.scheduleEvery(t_toggle_ms, &digitdodo::toggle_blink, (void*)ctx);
     
-    m_group_handles[t_group_name] = h;
+    m_group_params[t_group_name].handle = h;
 
     if(h.idx == -1)
         return false;
 
     return true;
-}
-
-std::unordered_map<std::string, std::string>& digitdodo::get_display_values()
-{
-    return m_display_values;
 }
 
 void digitdodo::turn_off_group(const std::string& t_group_name)
@@ -206,9 +196,24 @@ void digitdodo::turn_off_group(const std::string& t_group_name)
     {
         if(group.name == t_group_name)
         {
-            std::vector<unsigned char> raw_buffer = m_display_types[t_group_name]->getRawBuffer(std::string(group.length , ' '), group.length);
+            std::vector<unsigned char> raw_buffer = m_group_params[t_group_name].display_type->getRawBuffer(std::string(group.length , ' '), group.length);
             
             digitdodo_platform::updateRawBuffer(t_group_name, raw_buffer);
+            break;
+        }
+    }
+
+}
+
+void digitdodo::turn_on_group(const std::string& t_group_name)
+{
+    log_digitdodo("Turning off group: %s\n", t_group_name.c_str());
+
+    for(auto& group : m_groups)
+    {
+        if(group.name == t_group_name)
+        {
+            update_display_value(t_group_name, m_group_params[t_group_name].display_value, true);
             break;
         }
     }
@@ -228,10 +233,10 @@ void digitdodo::log_digitdodo(const char* format, ...)
 
 void digitdodo::set_scroll_direction(const std::string& t_group_name, ScrollDirection t_direction)
 {
-    if (m_group_scroll_direction.find(t_group_name) != m_group_scroll_direction.end())
-    {
-        m_group_scroll_direction[t_group_name] = t_direction;
-    }
+    if(m_group_params.find(t_group_name) == m_group_params.end())
+        return;
+
+    m_group_params[t_group_name].scroll_direction = t_direction;
 
 }
 
@@ -239,7 +244,7 @@ bool digitdodo::set_scroll_mode(const std::string& t_group_name, unsigned int t_
 {
     log_digitdodo("Setting scroll mode for group %s with scroll speed %u ms\n", t_group_name.c_str(), t_speed_ms);
     
-    m_group_scroll_position[t_group_name] = 0; // Reset scroll position
+    m_group_params[t_group_name].scroll_pos = 0;    // Reset scroll position
 
     int group_index = get_group_index(t_group_name);
 
@@ -251,11 +256,11 @@ bool digitdodo::set_scroll_mode(const std::string& t_group_name, unsigned int t_
     TickToucan& tt = TickToucan::instance();
 
     // Use the key from m_display_values to get a stable pointer
-    const char* ctx = m_display_values.find(t_group_name)->first.c_str();
+    const char* ctx = m_group_params.find(t_group_name)->first.c_str();
 
     TickToucan::Handle h = tt.scheduleEvery(t_speed_ms, &digitdodo::scroll_text, (void*)ctx);
     
-    m_group_handles[t_group_name] = h;
+    m_group_params[t_group_name].handle = h;
 
     if(h.idx == -1)
         return false;
@@ -263,12 +268,26 @@ bool digitdodo::set_scroll_mode(const std::string& t_group_name, unsigned int t_
     return true;
 }
 
+bool digitdodo::get_group_visibility(const std::string& t_group_name)
+{
+    if(m_group_params.find(t_group_name) == m_group_params.end())
+        return false;
+    return m_group_params[t_group_name].visible;
+}
+
+void digitdodo::set_group_visibility(const std::string& t_group_name, bool t_visible)
+{
+    if(m_group_params.find(t_group_name) == m_group_params.end())
+        return;
+    m_group_params[t_group_name].visible = t_visible;
+}
+
 void digitdodo::toggle_blink(void* ctx)
 {
     std::string group_name = std::string((const char*) ctx);
     digitdodo& dd = digitdodo::getInstance();
 
-    bool& visible = dd.m_group_visibility[group_name];
+    bool visible = dd.get_group_visibility(group_name);
 
     if (visible)
     {
@@ -276,10 +295,10 @@ void digitdodo::toggle_blink(void* ctx)
     }
     else
     {
-        dd.update_display_value(group_name, dd.get_display_values()[group_name], true);
+        dd.turn_on_group(group_name);
     }
 
-    visible = !visible;
+    dd.set_group_visibility(group_name, !visible);
 }
 
 void digitdodo::scroll_text(void* ctx)
@@ -295,17 +314,14 @@ void digitdodo::scroll_text(void* ctx)
 
 std::string digitdodo::populate_scrolled_value(std::string& group_name)
 {
-    return m_display_types[group_name]->populate_scrolled_value(m_display_values[group_name], m_groups[get_group_index(group_name)].length, m_group_scroll_direction[group_name], m_group_scroll_position[group_name]);
+    return m_group_params[group_name].display_type->populate_scrolled_value(m_group_params[group_name].display_value, m_groups[get_group_index(group_name)].length, m_group_params[group_name].scroll_direction, m_group_params[group_name].scroll_pos);
 }
-
-
-
 
 bool digitdodo::update_display(const std::string& t_group_name)
 {
-    if(m_display_values.find(t_group_name) == m_display_values.end())
+    if(m_group_params.find(t_group_name) == m_group_params.end())
         return false;
-    return update_segment_output(t_group_name, m_display_values[t_group_name]);
+    return update_segment_output(t_group_name, m_group_params[t_group_name].display_value);
 }
 
     

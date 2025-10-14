@@ -19,19 +19,33 @@ class BaseDigitDisplay;
 
 class digitdodo{
 
+    public:
+
+    /**
+     * @enum ScrollDirection
+     * @brief Direction of text scrolling for a display group.
+     *
+     * LeftToRight scrolls the visible window from right-most characters toward left.
+     * RightToLeft scrolls the visible window from left-most characters toward right.
+     */
+    enum ScrollDirection { LeftToRight, RightToLeft };
+
+    private:
+
+    struct s_display_params{
+
+        TickToucan::Handle handle;
+        std::string display_value;
+        bool visible;
+        int scroll_pos;
+        SevenSegmentDisplayMode mode;
+        BaseDigitDisplay* display_type;
+        ScrollDirection scroll_direction;
+    };
+
     std::vector<digitdodo_platform::HardwareGroup>& m_groups;
 
-    std::vector<SevenSegmentDisplayMode> m_display_mode;
-
-    std::unordered_map<std::string, TickToucan::Handle> m_group_handles;
-
-    std::unordered_map<std::string, std::string> m_display_values;
-
-    std::unordered_map<std::string, bool> m_group_visibility;
-
-    std::unordered_map<std::string, int> m_group_scroll_position;
-
-    std::unordered_map<std::string, BaseDigitDisplay*> m_display_types;
+    std::unordered_map<std::string, s_display_params> m_group_params;
 
     digitdodo();
 
@@ -136,15 +150,6 @@ class digitdodo{
     public:
 
     /**
-     * @enum ScrollDirection
-     * @brief Direction of text scrolling for a display group.
-     *
-     * LeftToRight scrolls the visible window from right-most characters toward left.
-     * RightToLeft scrolls the visible window from left-most characters toward right.
-     */
-    enum ScrollDirection { LeftToRight, RightToLeft };
-
-    /**
      * @brief Obtain the singleton instance of digitdodo.
      * @return Reference to the single digitdodo instance.
      *
@@ -202,18 +207,6 @@ class digitdodo{
     bool set_display_mode(const std::string& t_group_name, SevenSegmentDisplayMode t_mode, unsigned int t_param);
 
     /**
-     * @brief Retrieve a reference to the map of group display values.
-     * @return Reference to the internal mapping of group name to textual value.
-     *
-     * The caller obtains a reference to the internal container that stores the
-     * current textual values for all groups. Use with caution: modifications
-     * affect internal state directly.
-     * 
-     * ToDo : Fix so we dont expose values directly
-     */
-    std::unordered_map<std::string, std::string>& get_display_values();
-
-    /**
      * @brief Turn off (clear) the specified display group.
      * @param t_group_name Name of the group to turn off.
      *
@@ -223,6 +216,15 @@ class digitdodo{
     void turn_off_group(const std::string& t_group_name);
 
     /**
+     * @brief Turn on the specified display group.
+     * @param t_group_name Name of the group to turn off.
+     *
+     * Writes valid segment buffer to the hardware for the named group,
+     * effectively turning on that group.
+     */
+    void turn_on_group(const std::string& t_group_name);
+
+    /**
      * @brief Set the scroll direction for a specific group.
      * @param t_group_name Name of the group.
      * @param t_direction Desired scrolling direction (LeftToRight or RightToLeft).
@@ -230,9 +232,9 @@ class digitdodo{
      * Updates the internal scroll direction used by the group's scrolling logic.
      * No scheduling or immediate display change is performed by this function.
      */
-    void set_scroll_direction(const std::string& t_group_name, ScrollDirection t_direction);    
+    void set_scroll_direction(const std::string& t_group_name, ScrollDirection t_direction);
 
-    private:
+    bool get_group_visibility(const std::string& t_group_name);
 
-    std::unordered_map<std::string, ScrollDirection> m_group_scroll_direction;
+    void set_group_visibility(const std::string& t_group_name, bool t_visible);
 };
