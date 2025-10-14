@@ -175,7 +175,7 @@ class digitdodo{
      * the function calls the lower-level update routine to reflect the change on the
      * physical display.
      */
-    bool update_display_value(const std::string& t_group_name, const std::string& t_value, bool t_update_raw = false);
+    bool update_display_value(const std::string& t_group_name, const std::string t_value, bool t_update_raw = false);
 
     /**
      * @brief Convert a textual value and push segment output to hardware.

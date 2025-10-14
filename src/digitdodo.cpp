@@ -5,10 +5,6 @@
 
 #include <cstdio>
 
-bool isCharValid(digitdodo_platform::SegmentDisplayType t_type, unsigned char t_char);
-
-unsigned char getCharSegments(digitdodo_platform::SegmentDisplayType t_type, unsigned char t_char);
-
 digitdodo& digitdodo::getInstance()
 {
     static digitdodo instance;
@@ -21,7 +17,7 @@ digitdodo::digitdodo(): m_groups(digitdodo_platform::getGroups())
 
     for (const auto& group : m_groups) {
         m_group_handles[group.name] = {-1};
-        m_display_values[group.name] = std::string(m_groups.size(), ' ');
+        m_display_values[group.name] = std::string(group.length , ' ');
         m_group_visibility[group.name] = true;
         m_group_scroll_direction[group.name] = digitdodo::ScrollDirection::RightToLeft; // true = right to left
         m_group_scroll_position[group.name] = 0;
@@ -63,10 +59,10 @@ bool digitdodo::update_segment_output(const std::string& t_group_name, const std
     return true;
 }
 
-bool digitdodo::update_display_value(const std::string& t_group_name, const std::string& t_value, bool t_update_raw)
+bool digitdodo::update_display_value(const std::string& t_group_name, const std::string t_value, bool t_update_raw)
 {
     log_digitdodo("Updating display value for group %s to %s\n", t_group_name.c_str(), t_value.c_str());
-    
+
     int group_index = get_group_index(t_group_name);
     
     if (group_index == -1)
@@ -81,6 +77,8 @@ bool digitdodo::update_display_value(const std::string& t_group_name, const std:
             m_display_values[t_group_name] += c;
         }
     }
+
+    log_digitdodo("Updated display value for group %s to %s\n", t_group_name.c_str(), m_display_values[t_group_name].c_str());
 
     if(t_update_raw)
     {
@@ -208,7 +206,8 @@ void digitdodo::turn_off_group(const std::string& t_group_name)
     {
         if(group.name == t_group_name)
         {
-            std::vector<unsigned char> raw_buffer(group.length, 0);
+            std::vector<unsigned char> raw_buffer = m_display_types[t_group_name]->getRawBuffer(std::string(group.length , ' '), group.length);
+            
             digitdodo_platform::updateRawBuffer(t_group_name, raw_buffer);
             break;
         }
