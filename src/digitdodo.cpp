@@ -21,7 +21,7 @@ digitdodo::digitdodo(): m_groups(digitdodo_platform::getGroups())
 
     for (const auto& group : m_groups) {
         m_group_handles[group.name] = {-1};
-        m_display_values[group.name] = "";
+        m_display_values[group.name] = std::string(m_groups.size(), ' ');
         m_group_visibility[group.name] = true;
         m_group_scroll_direction[group.name] = digitdodo::ScrollDirection::RightToLeft; // true = right to left
         m_group_scroll_position[group.name] = 0;

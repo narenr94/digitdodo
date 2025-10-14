@@ -131,27 +131,34 @@ std::vector<unsigned char> FourteenDigitDisplay::getRawBuffer(const std::string&
     std::vector<unsigned char> raw_buffer;
     raw_buffer.reserve(group_size);
 
+    unsigned char c = t_value[0];
+    std::vector<unsigned char> seg = getCharSegments(c);
+    std::vector<unsigned char> next_seg;
+
     for (size_t i = 0, digit_count = 0; i < t_value.size() && digit_count < group_size; ++i)
     {
-        unsigned char c = t_value[i];
-
-        std::vector<unsigned char> seg = getCharSegments(c);
-
         if (seg == dp_char)
         {
+            seg = getCharSegments(t_value[i + 1]);
             continue;
-        }             
-
-       
-
+        }
+        
         // Check if next character is a dot
-        if (i + 1 < t_value.size() && (getCharSegments(t_value[i + 1]) == dp_char))
+        if (i + 1 < t_value.size())
         {
-            seg[1] |= 0x40;
+            next_seg = getCharSegments(t_value[i + 1]);
+            if(next_seg == dp_char)
+            {
+                seg[1] |= 0x40;
+            }
+            
         }
 
         raw_buffer.push_back(seg[0]);
         raw_buffer.push_back(seg[1]);
+
+        seg = next_seg;
+
         ++digit_count;
     }
 
@@ -249,9 +256,5 @@ bool FourteenDigitDisplay::isCharValid(unsigned char t_char)
 
 std::vector<unsigned char> FourteenDigitDisplay::getCharSegments(unsigned char t_char)
 {
-    if(!isCharValid(t_char))
-    {
-        return fourteenSegmentMap.at(' ');
-    }
     return fourteenSegmentMap.at(t_char);
 }
